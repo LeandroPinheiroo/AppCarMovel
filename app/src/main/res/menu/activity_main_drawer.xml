@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/grupo1">
+        <item android:title="Serviços" >
+        <menu>
+            <item
+                android:icon="@drawable/pistao"
+                android:id="@+id/todos_serv"
+                android:title="Todos serviços" />
+            <item
+                android:icon="@drawable/pistao"
+                android:id="@+id/serg_realizadaos"
+                android:title="Serviços realizados" />
+        </menu>
+        </item>
+    </group>
+
+    <item android:title="Ordem de serviços" >
+        <menu>
+            <item
+                android:icon="@drawable/os"
+                android:id="@+id/os"
+                android:title="Ordem serviços" />
+            <item
+                android:icon="@drawable/os"
+                android:id="@+id/orcamento"
+                android:title="Orçamento" />
+        </menu>
+    </item>
+
+</menu>
