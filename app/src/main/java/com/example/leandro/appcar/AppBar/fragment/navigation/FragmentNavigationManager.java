@@ -5,7 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.example.leandro.appcar.AppBar.fragment.FragmentAction;
+import com.example.leandro.appcar.AppBar.fragment.FragmentMain;
+import com.example.leandro.appcar.AppBar.fragment.FragmentOrcamento;
+import com.example.leandro.appcar.AppBar.fragment.FragmentOsAberta;
+import com.example.leandro.appcar.AppBar.fragment.FragmentOsFechada;
+import com.example.leandro.appcar.AppBar.fragment.FragmentServicos;
+import com.example.leandro.appcar.AppBar.fragment.FragmentServicosRealizados;
 import com.example.leandro.appcar.BuildConfig;
 import com.example.leandro.appcar.MainActivity;
 import com.example.leandro.appcar.R;
@@ -36,9 +41,32 @@ public class FragmentNavigationManager implements NavigationManager {
     }
 
     @Override
-    public void showFragmentAction(String title) {
-        showFragment(FragmentAction.newInstance(title), false);
+    public void showFragmentOrcamento() {
+        showFragment(FragmentOrcamento.newInstance(), false);
     }
+    @Override
+    public void showFragmentOsAberta() {
+        showFragment(FragmentOsAberta.newInstance(), false);
+    }
+    @Override
+    public void showFragmentOsFechada() {
+        showFragment(FragmentOsFechada.newInstance(), false);
+    }
+    @Override
+    public void showFragmentServicos() {
+        showFragment(FragmentServicos.newInstance(), false);
+    }
+    @Override
+    public void showFragmentServicosRealizados() {
+        showFragment(FragmentServicosRealizados.newInstance(), false);
+    }
+    @Override
+    public void showFragmentMain() {
+        showFragment(FragmentMain.newInstance(), false);
+    }
+
+
+
 
 
     private void showFragment(Fragment fragment, boolean allowStateLoss) {

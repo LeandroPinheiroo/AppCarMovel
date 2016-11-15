@@ -24,8 +24,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
         android:background="@color/white"
-        android:divider="@color/group_divider_color"
-        android:dividerHeight="@dimen/divider_height"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"/>
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:divider="@drawable/divider"
+        android:dividerHeight="1dp"
+        />
 
 </android.support.v4.widget.DrawerLayout>

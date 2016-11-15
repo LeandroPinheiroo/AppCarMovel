@@ -6,6 +6,10 @@ package com.example.leandro.appcar.AppBar.fragment.navigation;
 
 public interface NavigationManager {
 
-    void showFragmentAction(String title);
-
+    void showFragmentOrcamento();
+    void showFragmentOsAberta();
+    void showFragmentOsFechada();
+    void showFragmentServicos();
+    void showFragmentServicosRealizados();
+    void showFragmentMain();
 }

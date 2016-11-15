@@ -3,10 +3,12 @@ package com.example.leandro.appcar;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.widget.ExpandableListView;
 
 import com.example.leandro.appcar.AppBar.adapter.CustomExpandableListAdapter;
 import com.example.leandro.appcar.AppBar.datasource.ExpandableListDataSource;
+import com.example.leandro.appcar.AppBar.fragment.FragmentMain;
 import com.example.leandro.appcar.AppBar.fragment.navigation.FragmentNavigationManager;
 import com.example.leandro.appcar.AppBar.fragment.navigation.NavigationManager;
 
@@ -61,23 +64,15 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer();
 
         if (savedInstanceState == null) {
-            selectFirstItemAsDefault();
+            mNavigationManager.showFragmentMain();
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    private void selectFirstItemAsDefault() {
-        if (mNavigationManager != null) {
-            String firstActionMovie = getResources().getStringArray(R.array.actionFilms)[0];
-            mNavigationManager.showFragmentAction(firstActionMovie);
-            getSupportActionBar().setTitle(firstActionMovie);
-        }
-    }
-
     private void initItems() {
-        items = getResources().getStringArray(R.array.film_genre);
+        items = getResources().getStringArray(R.array.menu);
     }
 
     private void addDrawerItems() {
@@ -101,16 +96,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                String selectedItem = ((List) (mExpandableListData.get(mExpandableListTitle.get(groupPosition))))
-                        .get(childPosition).toString();
+                String selectedItem = ((List) (mExpandableListData.get(mExpandableListTitle.get(groupPosition)))).get(childPosition).toString();
+mActivityTitle = selectedItem;
                 getSupportActionBar().setTitle(selectedItem);
 
                 if (items[0].equals(mExpandableListTitle.get(groupPosition))) {
-                    mNavigationManager.showFragmentAction(selectedItem);
+                    switch (selectedItem) {
+                        case "Orçamentos":
+                            mNavigationManager.showFragmentOrcamento();
+                            break;
+                        case "Abertas":
+                            mNavigationManager.showFragmentOsAberta();
+                            break;
+                        case "Fechadas":
+                            mNavigationManager.showFragmentOsFechada();
+                            break;
+                    }
+
+                } else if (items[1].equals(mExpandableListTitle.get(groupPosition))) {
+                    switch (selectedItem) {
+                        case "Serviços":
+                            mNavigationManager.showFragmentServicos();
+                            break;
+                        case "Serviços Realizados":
+                            mNavigationManager.showFragmentServicosRealizados();
+                            break;
+                    }
                 } else {
                     throw new IllegalArgumentException("Not supported fragment type");
                 }
-
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 return false;
             }
