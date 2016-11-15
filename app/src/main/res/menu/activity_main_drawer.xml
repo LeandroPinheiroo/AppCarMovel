@@ -17,12 +17,12 @@
         </item>
     </group>
 
-    <item android:title="Ordem de serviços" >
+    <item android:title="Ordem de Serviços" >
         <menu>
             <item
                 android:icon="@drawable/os"
                 android:id="@+id/os"
-                android:title="Ordem serviços" />
+                android:title="Ordem de Serviços" />
             <item
                 android:icon="@drawable/os"
                 android:id="@+id/orcamento"
@@ -31,3 +31,5 @@
     </item>
 
 </menu>
+
+
