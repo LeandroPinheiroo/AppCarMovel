@@ -6,39 +6,35 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.example.leandro.appcar.AppBar.adapter.ServicoAdapter;
 import com.example.leandro.appcar.R;
+import com.example.leandro.appcar.database.models.Servico;
+import com.example.leandro.appcar.database.persistence.ServicoDAO;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentOs#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class FragmentOs extends Fragment {
-
+    private ListView listView;
+    private ArrayList<Servico> lista = new ArrayList<>();
+    private ServicoAdapter adapter;
 
     public FragmentOs() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment.
-     *
-     * @return A new instance of fragment FragmentAction.
-     */
     public static FragmentOs newInstance() {
         FragmentOs fragmentAction = new FragmentOs();
         Bundle args = new Bundle();
         fragmentAction.setArguments(args);
-
         return fragmentAction;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -51,5 +47,9 @@ public class FragmentOs extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
+        adapter = new ServicoAdapter(this.getContext());
+        adapter.setLista((ArrayList<Servico>) new ServicoDAO(this.getContext()).getAll());
     }
+
 }

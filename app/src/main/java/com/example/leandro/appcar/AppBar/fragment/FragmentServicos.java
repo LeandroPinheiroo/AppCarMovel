@@ -10,11 +10,19 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.example.leandro.appcar.AppBar.adapter.ServicoAdapter;
 import com.example.leandro.appcar.R;
+import com.example.leandro.appcar.database.models.Servico;
+import com.example.leandro.appcar.database.persistence.ServicoDAO;
+
+import java.util.ArrayList;
 
 public class FragmentServicos extends Fragment {
-
+    private ListView listView;
+    private ArrayList<Servico> lista = new ArrayList<>();
+    private ServicoAdapter adapter;
 
     public FragmentServicos() {
     }
@@ -42,7 +50,8 @@ public class FragmentServicos extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
+        adapter = new ServicoAdapter(this.getContext());
+        adapter.setLista((ArrayList<Servico>) new ServicoDAO(this.getContext()).getAll());
     }
 }

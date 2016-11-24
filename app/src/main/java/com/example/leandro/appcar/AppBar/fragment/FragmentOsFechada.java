@@ -10,8 +10,14 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.example.leandro.appcar.AppBar.adapter.OrdemServicoAdapter;
 import com.example.leandro.appcar.R;
+import com.example.leandro.appcar.database.models.OrdemServico;
+import com.example.leandro.appcar.database.persistence.OrdemServicoDAO;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +25,9 @@ import com.example.leandro.appcar.R;
  * create an instance of this fragment.
  */
 public class FragmentOsFechada extends Fragment {
+    private ListView listView;
+    private ArrayList<OrdemServico> lista = new ArrayList<>();
+    private OrdemServicoAdapter adapter;
 
 
     public FragmentOsFechada() {
@@ -50,7 +59,14 @@ public class FragmentOsFechada extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        for (OrdemServico os:  new OrdemServicoDAO(this.getContext()).getAll()){
+            if (os.getSituacao() == 3){
+                lista.add(os);
+            }
+        }
+        listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
+        adapter = new OrdemServicoAdapter(this.getContext());
+        adapter.setLista(lista);
 
     }
 }

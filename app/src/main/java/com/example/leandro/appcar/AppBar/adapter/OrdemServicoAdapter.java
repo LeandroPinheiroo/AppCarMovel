@@ -5,20 +5,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.TextView;
-
 import com.example.leandro.appcar.R;
+import com.example.leandro.appcar.database.models.OrdemServico;
 
 import java.util.ArrayList;
 
-public class OsAdapter extends BaseAdapter {
-    private ArrayList<String> lista = new ArrayList<String>();
+public class OrdemServicoAdapter extends BaseAdapter {
+    private ArrayList<OrdemServico> lista = new ArrayList<>();
     private Context context;
 
-    public OsAdapter(Context context) {
+    public OrdemServicoAdapter(Context context) {
         super();
         this.context = context;
+    }
+
+    public ArrayList<OrdemServico> getLista() {
+        return lista;
+    }
+
+    public void setLista(ArrayList<OrdemServico> lista) {
+        this.lista = lista;
     }
 
     @Override
@@ -38,10 +45,13 @@ public class OsAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        String itemLista = lista.get(position);
+        com.example.leandro.appcar.database.models.OrdemServico itemLista = lista.get(position);
         View view = LayoutInflater.from(context).inflate(R.layout.adapter_os, parent, false);
-
-        TextView tv = (TextView) view.findViewById(R.id.textView);
+        TextView tvCod = (TextView) view.findViewById(R.id.textValorCod);
+        TextView tvMarca = (TextView) view.findViewById(R.id.textCarMarca);
+        TextView tvModelo = (TextView) view.findViewById(R.id.textCarModelo);
+        TextView tvData = (TextView) view.findViewById(R.id.textValorData);
+        TextView tvPlca = (TextView) view.findViewById(R.id.textValorPlaca);
         return view;
     }
 

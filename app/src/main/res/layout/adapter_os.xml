@@ -77,7 +77,7 @@
                         android:text="Modelo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textModelo"
+                        android:id="@+id/textCarModelo"
                         android:fontFamily="serif"
                         android:textColor="@android:color/black" />
                 </LinearLayout>
