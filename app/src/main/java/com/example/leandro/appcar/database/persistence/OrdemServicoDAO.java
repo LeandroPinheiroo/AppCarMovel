@@ -67,6 +67,7 @@ public class OrdemServicoDAO {
                 ordemServico.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
                 ordemServico.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
                 ordemServico.setSituacao(cursor.getInt(cursor.getColumnIndex("situacao")));
+                ordemServico.setData(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("data"))));
 
 
 

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.leandro.appcar.database.SQLiteConnector;
 import com.example.leandro.appcar.database.models.Log;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class LogDAO {
                 Log log = new Log(null,null);
                 log.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
                 log.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
+                log.setData(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("data"))));
 
 
                 logs.add(log);
