@@ -12,4 +12,5 @@ public interface NavigationManager {
     void showFragmentServicos();
     void showFragmentServicosRealizados();
     void showFragmentMain();
+    void showFragmentOs();
 }

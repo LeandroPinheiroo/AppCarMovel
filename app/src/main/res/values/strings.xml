@@ -54,7 +54,12 @@
     <string name="tituloOrcamento">Orçamentos</string>
     <string name="tituloOsAberta">O.S Abertas</string>
     <string name="tituloOsFechada">O.S Fechadas</string>
+    <string name="tituloOS">Ordem de Serviço</string>
 
     <!--Fragment de Main-->
     <string name="tituloMain">Bem vindo ao AppCar</string>
+
+
+
+
 </resources>

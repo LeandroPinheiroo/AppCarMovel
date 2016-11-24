@@ -109,7 +109,7 @@ mActivityTitle = selectedItem;
                             mNavigationManager.showFragmentOsAberta();
                             break;
                         case "Fechadas":
-                            mNavigationManager.showFragmentOsFechada();
+                            mNavigationManager.showFragmentOs();
                             break;
                     }
 

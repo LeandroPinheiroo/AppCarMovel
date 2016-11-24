@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.example.leandro.appcar.AppBar.fragment.FragmentMain;
 import com.example.leandro.appcar.AppBar.fragment.FragmentOrcamento;
+import com.example.leandro.appcar.AppBar.fragment.FragmentOs;
 import com.example.leandro.appcar.AppBar.fragment.FragmentOsAberta;
 import com.example.leandro.appcar.AppBar.fragment.FragmentOsFechada;
 import com.example.leandro.appcar.AppBar.fragment.FragmentServicos;
@@ -44,6 +45,8 @@ public class FragmentNavigationManager implements NavigationManager {
     public void showFragmentOrcamento() {
         showFragment(FragmentOrcamento.newInstance(), false);
     }
+    @Override
+    public void showFragmentOs() {showFragment(FragmentOs.newInstance(), false);}
     @Override
     public void showFragmentOsAberta() {
         showFragment(FragmentOsAberta.newInstance(), false);
