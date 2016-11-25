@@ -39,6 +39,7 @@ public class PessoaDAO {
         values.put("TelefoneM", pessoa.getTelefoneM());
         values.put("TelefoneF", pessoa.getTelefoneF());
         values.put("rg", pessoa.getRg());
+        values.put("endereco",pessoa.getEndereco().getCod());
 
         if (identifier != 0) {
             return database.update("pessoa", values, "codigo = ?", new String[]{String.valueOf(identifier)});
@@ -71,6 +72,7 @@ public class PessoaDAO {
                 pessoa.setTelefoneM(cursor.getString(cursor.getColumnIndex("telefoneM")));
                 pessoa.setTelefoneF(cursor.getString(cursor.getColumnIndex("telefoneF")));
                 pessoa.setRg(cursor.getString(cursor.getColumnIndex("rg")));
+                pessoa.setEndereco(new EnderecoDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("endereco_cod"))));
 
                 pessoas.add(pessoa);
             } while (cursor.moveToNext());
@@ -79,4 +81,24 @@ public class PessoaDAO {
         cursor.close();
         return pessoas;
     }
+    public Pessoa get(int id) {
+        SQLiteDatabase db = connector.getReadableDatabase();
+
+        Cursor cursor = db.query("Pessoa",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Pessoa pessoa = new Pessoa();
+        pessoa.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
+        pessoa.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+        pessoa.setCpf(cursor.getString(cursor.getColumnIndex("cpf")));
+        pessoa.setSexo(cursor.getString(cursor.getColumnIndex("sexo")));
+        pessoa.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+        pessoa.setTelefoneM(cursor.getString(cursor.getColumnIndex("telefoneM")));
+        pessoa.setTelefoneF(cursor.getString(cursor.getColumnIndex("telefoneF")));
+        pessoa.setRg(cursor.getString(cursor.getColumnIndex("rg")));
+        pessoa.setEndereco(new EnderecoDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("endereco_cod"))));
+        return pessoa;
+    }
+
 }

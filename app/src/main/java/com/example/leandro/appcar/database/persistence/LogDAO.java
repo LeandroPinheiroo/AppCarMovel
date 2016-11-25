@@ -33,6 +33,9 @@ public class LogDAO {
         Integer identifier = log.getCod();
         ContentValues values = new ContentValues();
         values.put("descricao", log.getDescricao());
+        values.put("data",(log.getData().toString()));
+        values.put("funcionario_codigo",log.getFuncionario().getCodigo());
+
 
         if (identifier != 0) {
             return database.update("log", values, "cod = ?", new String[]{String.valueOf(identifier)});
@@ -60,6 +63,7 @@ public class LogDAO {
                 log.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
                 log.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
                 log.setData(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("data"))));
+                log.setFuncionario(new FuncionarioDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("funcionario_codigo"))));
 
 
                 logs.add(log);
@@ -68,5 +72,19 @@ public class LogDAO {
 
         cursor.close();
         return logs;
+    }
+    public Log get(int id) {
+        SQLiteDatabase db = connector.getReadableDatabase();
+
+        Cursor cursor = db.query("Log",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Log log = new Log(null,null);
+        log.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
+        log.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
+        log.setData(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("data"))));
+        log.setFuncionario(new FuncionarioDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("funcionario_codigo"))));
+        return log;
     }
 }

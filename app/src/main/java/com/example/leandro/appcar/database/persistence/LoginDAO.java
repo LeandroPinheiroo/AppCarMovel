@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 
 import com.example.leandro.appcar.database.SQLiteConnector;
+import com.example.leandro.appcar.database.models.Funcionario;
 import com.example.leandro.appcar.database.models.Login;
+import com.example.leandro.appcar.database.models.Pessoa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,5 +68,18 @@ public class LoginDAO {
 
         cursor.close();
         return servidors;
+    }
+    public Login get(int id) {
+        SQLiteDatabase db = connector.getReadableDatabase();
+
+        Cursor cursor = db.query("Login",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Login login = new Login();
+        login.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
+        login.setSenha(cursor.getString(cursor.getColumnIndex("senha")));
+        login.setUsuario(cursor.getString(cursor.getColumnIndex("usuario")));
+        return login;
     }
 }

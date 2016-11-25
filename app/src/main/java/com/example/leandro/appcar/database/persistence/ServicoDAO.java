@@ -68,4 +68,17 @@ public class ServicoDAO {
         cursor.close();
         return servicos;
     }
+    public Servico get(int id) {
+        SQLiteDatabase db = connector.getReadableDatabase();
+
+        Cursor cursor = db.query("Servico",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Servico servico = new Servico();
+        servico.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
+        servico.setValor((cursor.getDouble(cursor.getColumnIndex("valor"))));
+        servico.setDescricao((cursor.getString(cursor.getColumnIndex("descricao"))));
+        return servico;
+    }
 }

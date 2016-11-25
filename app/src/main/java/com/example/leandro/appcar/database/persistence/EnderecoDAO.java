@@ -75,4 +75,20 @@ public class EnderecoDAO {
         cursor.close();
         return enderecos;
     }
+    public Endereco get(int id) {
+        SQLiteDatabase db = connector.getReadableDatabase();
+
+        Cursor cursor = db.query("Endereco",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Endereco endereco = new Endereco();
+        endereco.setNumero((cursor.getString(cursor.getColumnIndex("numero"))));
+        endereco.setRua((cursor.getString(cursor.getColumnIndex("rua"))));
+        endereco.setBairro((cursor.getString(cursor.getColumnIndex("bairro"))));
+        endereco.setCidade((cursor.getString(cursor.getColumnIndex("cidade"))));
+        endereco.setComplemento((cursor.getString(cursor.getColumnIndex("comeplento"))));
+        endereco.setCep((cursor.getString(cursor.getColumnIndex("cep"))));
+        return endereco;
+    }
 }

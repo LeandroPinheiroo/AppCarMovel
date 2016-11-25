@@ -32,64 +32,81 @@ public class SQLiteConnector extends SQLiteOpenHelper {
     private void dump(SQLiteDatabase database, int version) {
         Log.d("DB","Criado");
         database.execSQL(
-                        "create table login("+
-                         "cod integer primary key,"+
-                         "senha text,"+
-                          "usuario text"+
-                            ");"
+                "create table login("+
+                        "cod integer primary key,"+
+                        "senha text,"+
+                        "usuario text"+
+                        ");"
                         +
                         "create table endereco("+
-                         "cod integer primary key," +
-                         "bairro text," +
-                         "cep text," +
-                         "cidade text," +
-                         "complemento text," +
-                         "numero text," +
-                         "rua text"+
-                         ");"
+                        "cod integer primary key," +
+                        "bairro text," +
+                        "cep text," +
+                        "cidade text," +
+                        "complemento text," +
+                        "numero text," +
+                        "rua text"+
+                        ");"
                         +
                         "create table servico_os("+
-                          "cod integer primary key,"+
-                          "funcionario_codigo integer," +
-                          "ordemservico_cod integer," +
-                          "servico_cod"+");"
+                        "cod integer primary key,"+
+                        "funcionario_codigo integer," +
+                        "ordemservico_cod integer," +
+                        "servico_cod"+");"
                         +
                         "create table funcionario("+
-                          "codigo integer," +
-                          "login_cod integer"+");"
+                        "codigo integer," +
+                        "login_cod integer"+");"
                         +
-                        "create table pessoas("+
-                          "tipo text," +
-                          "codigo integer primary key," +
-                          "cpf text," +
-                          "email text," +
-                          "nome text," +
-                          "rg text," +
-                          "sexo text," +
-                          "telefoneF text," +
-                          "telefonM text," +
-                          "endereco_cod integer" +");"
+                        "create table pessoa("+
+                        "tipo text," +
+                        "codigo integer primary key," +
+                        "cpf text," +
+                        "email text," +
+                        "nome text," +
+                        "rg text," +
+                        "sexo text," +
+                        "telefoneF text," +
+                        "telefonM text," +
+                        "endereco_cod integer" +");"
                         +
                         "create table cliente("+
-                          "codigo integer"+");"
+                        "codigo integer"+");"
                         +
                         "create table carro("+
-                          "cod integer primary key," +
-                          "ano text," +
-                          "chassi text," +
-                          "cor text," +
-                          "cor text," +
-                          "km text," +
-                          "marca text," +
-                          "modelo text," +
-                          "obs text," +
-                          "placa text," +
-                          "dono_codigo integer"+");"
+                        "cod integer primary key," +
+                        "ano text," +
+                        "chassi text," +
+                        "cor text," +
+                        "cor text," +
+                        "km text," +
+                        "marca text," +
+                        "modelo text," +
+                        "obs text," +
+                        "placa text," +
+                        "dono_codigo integer"+");"
                         +
                         "create table servico("+
-                          "cod integer," +
-                          "descricao text," +
-                          "valor double"+");"
+                        "cod integer primary key," +
+                        "descricao text," +
+                        "valor double"+");"
+                        +
+                        "create table ordemServico("+
+                        "cod integer primary key,"+
+                        "tipo text," +
+                        "data text," +
+                        "situacao integer," +
+                        "cliente_codigo integer," +
+                        "carro_cod integer," +
+                        "descricao integer"+");"
+                        +
+                        "create table log("+
+                        "cod integer," +
+                        "descricao text," +
+                        "data text," +
+                        "funcionario_cod integer" +");"
+
+
 
 
         );

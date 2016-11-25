@@ -20,7 +20,7 @@ public class FuncionarioDAO {
     private SQLiteConnector connector;
     private Context context;
 
-    private FuncionarioDAO(Context context) {
+    public FuncionarioDAO(Context context) {
         this.connector = new SQLiteConnector(context);
         this.context = context;
     }
@@ -39,6 +39,7 @@ public class FuncionarioDAO {
         values.put("TelefoneF", funcionario.getTelefoneF());
         values.put("endereco",funcionario.getEndereco().getCod());
         values.put("rg", funcionario.getRg());
+
 
         if (identifier != 0) {
             return database.update("funcionario", values, "codigo = ?", new String[]{String.valueOf(identifier)});
@@ -63,14 +64,17 @@ public class FuncionarioDAO {
         if (cursor.moveToFirst()) {
             do {
                 Funcionario funcionario = new Funcionario();
-                funcionario.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
-                funcionario.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-                funcionario.setCpf(cursor.getString(cursor.getColumnIndex("cpf")));
-                funcionario.setSexo(cursor.getString(cursor.getColumnIndex("sexo")));
-                funcionario.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-                funcionario.setTelefoneM(cursor.getString(cursor.getColumnIndex("telefoneM")));
-                funcionario.setTelefoneF(cursor.getString(cursor.getColumnIndex("telefoneF")));
-                funcionario.setRg(cursor.getString(cursor.getColumnIndex("rg")));
+                Pessoa pessoa = new PessoaDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
+                funcionario.setCodigo(pessoa.getCodigo());
+                funcionario.setNome(pessoa.getNome());
+                funcionario.setCpf(pessoa.getCpf());
+                funcionario.setSexo(pessoa.getSexo());
+                funcionario.setEndereco(pessoa.getEndereco());
+                funcionario.setEmail(pessoa.getEmail());
+                funcionario.setTelefoneM(pessoa.getTelefoneM());
+                funcionario.setTelefoneF(pessoa.getTelefoneF());
+                funcionario.setRg(pessoa.getRg());
+                funcionario.setEndereco(new EnderecoDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("endereco_cod"))));
 
                 funcionarios.add(funcionario);
             } while (cursor.moveToNext());
@@ -78,5 +82,27 @@ public class FuncionarioDAO {
 
         cursor.close();
         return funcionarios;
+    }
+
+    public Funcionario get(int id) {
+        SQLiteDatabase db = connector.getReadableDatabase();
+
+        Cursor cursor = db.query("Funcionario",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Funcionario funcionario = new Funcionario();
+        Pessoa pessoa = new PessoaDAO(this.context).get(id);
+        funcionario.setCodigo(pessoa.getCodigo());
+        funcionario.setNome(pessoa.getNome());
+        funcionario.setCpf(pessoa.getCpf());
+        funcionario.setSexo(pessoa.getSexo());
+        funcionario.setEndereco(pessoa.getEndereco());
+        funcionario.setEmail(pessoa.getEmail());
+        funcionario.setTelefoneM(pessoa.getTelefoneM());
+        funcionario.setTelefoneF(pessoa.getTelefoneF());
+        funcionario.setRg(pessoa.getRg());
+        funcionario.setEndereco(new EnderecoDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("endereco_cod"))));
+        return funcionario;
     }
 }

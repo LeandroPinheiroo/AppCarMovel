@@ -36,8 +36,8 @@ public class ClienteDAO {
         values.put("cpf",cliente.getCpf());
         values.put("sexo", cliente.getSexo());
         values.put("email", cliente.getEmail());
-        values.put("TelefoneM", cliente.getTelefoneM());
-        values.put("TelefoneF", cliente.getTelefoneF());
+        values.put("telefoneM", cliente.getTelefoneM());
+        values.put("telefoneF", cliente.getTelefoneF());
         values.put("endereco",cliente.getEndereco().getCod());
         values.put("rg", cliente.getRg());
 
@@ -63,22 +63,46 @@ public class ClienteDAO {
         Cursor cursor = database.query("cliente", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                Cliente cliente = new Cliente();
-                cliente.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
-                cliente.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-                cliente.setCpf(cursor.getString(cursor.getColumnIndex("cpf")));
-                cliente.setSexo(cursor.getString(cursor.getColumnIndex("sexo")));
-                cliente.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-                cliente.setTelefoneM(cursor.getString(cursor.getColumnIndex("telefoneM")));
-                cliente.setTelefoneF(cursor.getString(cursor.getColumnIndex("telefoneF")));
-                cliente.setRg(cursor.getString(cursor.getColumnIndex("rg")));
 
+                Cliente cliente = new Cliente();
+                Pessoa pessoa = new PessoaDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
+                cliente.setCodigo(pessoa.getCodigo());
+                cliente.setNome(pessoa.getNome());
+                cliente.setCpf(pessoa.getCpf());
+                cliente.setSexo(pessoa.getSexo());
+                cliente.setEndereco(pessoa.getEndereco());
+                cliente.setEmail(pessoa.getEmail());
+                cliente.setTelefoneM(pessoa.getTelefoneM());
+                cliente.setTelefoneF(pessoa.getTelefoneF());
+                cliente.setRg(pessoa.getRg());
+                cliente.setEndereco(new EnderecoDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("endereco_cod"))));
                 clientes.add(cliente);
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         return clientes;
+    }
+    public Cliente get(int id) {
+        SQLiteDatabase db = connector.getReadableDatabase();
+
+        Cursor cursor = db.query("Cliente",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Cliente cliente = new Cliente();
+        Pessoa pessoa = new PessoaDAO(this.context).get(id);
+        cliente.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
+        cliente.setNome(pessoa.getNome());
+        cliente.setCpf(pessoa.getCpf());
+        cliente.setSexo(pessoa.getSexo());
+        cliente.setEndereco(pessoa.getEndereco());
+        cliente.setEmail(pessoa.getEmail());
+        cliente.setTelefoneM(pessoa.getTelefoneM());
+        cliente.setTelefoneF(pessoa.getTelefoneF());
+        cliente.setEndereco(new EnderecoDAO(this.context).get(cursor.getInt(cursor.getColumnIndex("endereco_cod"))));
+        cliente.setRg(pessoa.getRg());
+        return cliente;
     }
 
 }
