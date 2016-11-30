@@ -54,7 +54,7 @@ public class ServicoDAO {
 
         List<Servico> servicos = new ArrayList<>();
 
-        Cursor cursor = database.query("servidor", null, null, null, null, null, null);
+        Cursor cursor = database.query("servico", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Servico servico = new Servico();
@@ -71,7 +71,7 @@ public class ServicoDAO {
     public Servico get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Servico",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("servico",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 

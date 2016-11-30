@@ -87,7 +87,7 @@ public class FuncionarioDAO {
     public Funcionario get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Funcionario",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("funcionario",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 

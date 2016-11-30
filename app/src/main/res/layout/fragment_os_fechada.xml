@@ -14,7 +14,9 @@
             android:id="@+id/textView3"
             android:textSize="40sp"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:fontFamily="casual"
+            android:textColor="@android:color/black" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -58,7 +58,7 @@ public class EnderecoDAO {
 
         List<Endereco> enderecos = new ArrayList<>();
 
-        Cursor cursor = database.query("servidor", null, null, null, null, null, null);
+        Cursor cursor = database.query("endereco", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Endereco endereco = new Endereco();

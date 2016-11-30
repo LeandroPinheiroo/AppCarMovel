@@ -54,7 +54,7 @@ public class Servico_OSDAO {
 
         List<Servico_OS> servicos = new ArrayList<>();
 
-        Cursor cursor = database.query("servidor", null, null, null, null, null, null);
+        Cursor cursor = database.query("servico_os", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Servico_OS servico_os = new Servico_OS();
@@ -72,7 +72,7 @@ public class Servico_OSDAO {
     public Servico_OS get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Servico_OS",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("servico_os",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 

@@ -32,12 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private String[] items;
-
     private ExpandableListView mExpandableListView;
     private ExpandableListAdapter mExpandableListAdapter;
     private List<String> mExpandableListTitle;
     private NavigationManager mNavigationManager;
-
+    private  View listHeaderView;
     private Map<String, List<String>> mExpandableListData;
 
     @Override
@@ -54,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
         initItems();
 
         LayoutInflater inflater = getLayoutInflater();
-        View listHeaderView = inflater.inflate(R.layout.nav_header, null, false);
+        listHeaderView = inflater.inflate(R.layout.nav_header, null, false);
+        this.onClickHeader();
+
         mExpandableListView.addHeaderView(listHeaderView);
 
         mExpandableListData = ExpandableListDataSource.getData(this);
@@ -69,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+    public void onClickHeader(){
+        listHeaderView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mNavigationManager.showFragmentMain();
+                getSupportActionBar().setTitle("AppCar");
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+
+            }
+        });
     }
 
     private void initItems() {
@@ -97,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
                 String selectedItem = ((List) (mExpandableListData.get(mExpandableListTitle.get(groupPosition)))).get(childPosition).toString();
-mActivityTitle = selectedItem;
+                mActivityTitle = selectedItem;
                 getSupportActionBar().setTitle(selectedItem);
 
                 if (items[0].equals(mExpandableListTitle.get(groupPosition))) {
@@ -109,7 +121,7 @@ mActivityTitle = selectedItem;
                             mNavigationManager.showFragmentOsAberta();
                             break;
                         case "Fechadas":
-                            mNavigationManager.showFragmentOs();
+                            mNavigationManager.showFragmentOsFechada();
                             break;
                     }
 

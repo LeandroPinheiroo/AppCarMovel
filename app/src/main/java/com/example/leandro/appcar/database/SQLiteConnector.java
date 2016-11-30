@@ -91,7 +91,7 @@ public class SQLiteConnector extends SQLiteOpenHelper {
                         "descricao text," +
                         "valor double"+");"
                         +
-                        "create table ordemServico("+
+                        "create table ordemservico("+
                         "cod integer primary key,"+
                         "tipo text," +
                         "data text," +
