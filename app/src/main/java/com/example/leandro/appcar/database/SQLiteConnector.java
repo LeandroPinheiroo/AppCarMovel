@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class SQLiteConnector extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "database";
+    public static final String DB_NAME = "appcar";
     public static final int DB_VERSION = 1;
 
     public SQLiteConnector(Context context) {
@@ -30,85 +30,81 @@ public class SQLiteConnector extends SQLiteOpenHelper {
     }
 
     private void dump(SQLiteDatabase database, int version) {
-        Log.d("DB","Criado");
+        Log.d("DB","Entrou na criação");
         database.execSQL(
-                "create table login("+
-                        "cod integer primary key,"+
-                        "senha text,"+
-                        "usuario text"+
-                        ");"
-                        +
-                        "create table endereco("+
-                        "cod integer primary key," +
-                        "bairro text," +
-                        "cep text," +
-                        "cidade text," +
-                        "complemento text," +
-                        "numero text," +
-                        "rua text"+
-                        ");"
-                        +
-                        "create table servico_os("+
-                        "cod integer primary key,"+
-                        "funcionario_codigo integer," +
-                        "ordemservico_cod integer," +
-                        "servico_cod"+");"
-                        +
-                        "create table funcionario("+
-                        "codigo integer," +
-                        "login_cod integer"+");"
-                        +
-                        "create table pessoa("+
-                        "tipo text," +
-                        "codigo integer primary key," +
-                        "cpf text," +
-                        "email text," +
-                        "nome text," +
-                        "rg text," +
-                        "sexo text," +
-                        "telefoneF text," +
-                        "telefonM text," +
-                        "endereco_cod integer" +");"
-                        +
-                        "create table cliente("+
-                        "codigo integer"+");"
-                        +
-                        "create table carro("+
-                        "cod integer primary key," +
-                        "ano text," +
-                        "chassi text," +
-                        "cor text," +
-                        "cor text," +
-                        "km text," +
-                        "marca text," +
-                        "modelo text," +
-                        "obs text," +
-                        "placa text," +
-                        "dono_codigo integer"+");"
-                        +
-                        "create table servico("+
-                        "cod integer primary key," +
-                        "descricao text," +
-                        "valor double"+");"
-                        +
-                        "create table ordemservico("+
-                        "cod integer primary key,"+
-                        "tipo text," +
-                        "data text," +
-                        "situacao integer," +
-                        "cliente_codigo integer," +
-                        "carro_cod integer," +
-                        "descricao integer"+");"
-                        +
-                        "create table log("+
-                        "cod integer," +
-                        "descricao text," +
-                        "data text," +
-                        "funcionario_cod integer" +");"
-
-
-
-
+                "create table if not exists login("+
+                        " cod integer primary key,"+
+                        " senha text,"+
+                        " usuario text"+
+                        ");");
+        database.execSQL(
+                "create table if not exists endereco("+
+                        " cod integer primary key," +
+                        " bairro text," +
+                        " cep text," +
+                        " cidade text," +
+                        " complemento text," +
+                        " numero text," +
+                        " rua text"+
+                        ");");
+        database.execSQL(
+                "create table if not exists servico_os("+
+                        " cod integer primary key,"+
+                        " funcionario_codigo integer," +
+                        " ordemservico_cod integer," +
+                        " servico_cod"+");");
+        database.execSQL(
+                "create table if not exists funcionario("+
+                        " codigo integer," +
+                        " login_cod integer"+");");
+        database.execSQL(
+                "create table if not exists pessoa("+
+                        " tipo text," +
+                        " codigo integer primary key," +
+                        " cpf text," +
+                        " email text," +
+                        " nome text," +
+                        " rg text," +
+                        " sexo text," +
+                        " telefoneF text," +
+                        " telefonM text," +
+                        " endereco_cod integer" +");");
+        database.execSQL(
+                "create table if not exists cliente("+
+                        " codigo integer"+");");
+        database.execSQL(
+                "create table if not exists carro("+
+                        " cod integer primary key," +
+                        " ano text," +
+                        " chassi text," +
+                        " cor text," +
+                        " km text," +
+                        " marca text," +
+                        " modelo text," +
+                        " obs text," +
+                        " placa text," +
+                        " dono_codigo integer"+");");
+        database.execSQL(
+                "create table if not exists servico("+
+                        " cod integer primary key," +
+                        " descricao text," +
+                        " valor double"+");");
+        database.execSQL(
+                "create table if not exists ordemservico("+
+                        " cod integer primary key,"+
+                        " tipo text," +
+                        " data text," +
+                        " situacao integer," +
+                        " cliente_codigo integer," +
+                        " carro_cod integer," +
+                        " descricao integer"+");");
+        database.execSQL(
+                "create table if not exists log("+
+                        " cod integer," +
+                        " descricao text," +
+                        " data text," +
+                        " funcionario_cod integer" +");"
         );
+        Log.d("DB","Criado");
     }
 }

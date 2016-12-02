@@ -21,7 +21,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textOs"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:textColor="Black" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -91,7 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textCliente"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:textColor="Black" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -179,7 +181,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/texCarro"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:textColor="Black" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -266,7 +269,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textServico"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:textColor="Black" />
 
             <ListView
                 android:layout_width="match_parent"
@@ -290,7 +294,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textValor"
                 android:textAlignment="viewEnd"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:textColorLink="?attr/actionMenuTextColor" />
 
             <TextView
                 android:text="R$00,00"

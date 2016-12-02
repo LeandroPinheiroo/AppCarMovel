@@ -51,6 +51,11 @@ public class LogDAO {
         return database.delete("log", "cod = ?", new String[] { String.valueOf(log.getCod()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("log", null, null);
+    }
+
     public List<Log> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 

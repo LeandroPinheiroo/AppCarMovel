@@ -55,6 +55,11 @@ public class PessoaDAO {
         return database.delete("pessoa", "codigo = ?", new String[] { String.valueOf(pessoa.getCodigo()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("pessoa", null, null);
+    }
+
     public List<Pessoa> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 

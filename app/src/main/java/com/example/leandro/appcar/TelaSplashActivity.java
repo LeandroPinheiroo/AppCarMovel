@@ -1,5 +1,6 @@
 package com.example.leandro.appcar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
@@ -7,12 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.example.leandro.appcar.database.persistence.ServicoDAO;
 
 public class TelaSplashActivity extends AppCompatActivity {
 
     private ImageView splash;
     AnimationDrawable splashAnimation;
+    private static Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,8 @@ public class TelaSplashActivity extends AppCompatActivity {
 
         splash = (ImageView) findViewById(R.id.ivAnimacao);// imageWiew no layout
         splash.setBackgroundResource(R.drawable.splash_animation);//drawable construido para animaçao
+
+        ctx = this.getApplicationContext();
 
         //inicia processamento paralelo a thread
         new InsertAsync().execute("");
@@ -58,28 +63,34 @@ public class TelaSplashActivity extends AppCompatActivity {
 
     }
 
+    protected static void populate(){
+        ServicoDAO dao = new ServicoDAO(ctx);
+        dao.getSocket();
+
+
+    }
+
     /* -------------------------------------------------------
     SUBCLASSE RESPONSÁVEL POR CRIAR A SEGUNDA THREAD, OBJETIVANDO PROCESSAMENTO
     PARALELO AO DA THREAD DA INTERFACE GRÁFICA
      ----------------------------------------------------------*/
+
     class InsertAsync extends AsyncTask<String, String, String> {
         //método executado antes do método da segunda thread doInBackground
         @Override
         protected void onPreExecute() {
-
         }
 
         //método que será executado em outra thread
         @Override
         protected String doInBackground(String... args) {
-        return "";
+            TelaSplashActivity.populate();
+            return "";
         }
 
         //método executado depois da thread do doInBackground
         @Override
         protected void onPostExecute(String retorno) {
-            //manda mensagem na tela para dizer que já executou a segunda thread
-            Toast.makeText(getApplicationContext(), "Executou, j=" + retorno, Toast.LENGTH_LONG).show();
         }
     }
 }

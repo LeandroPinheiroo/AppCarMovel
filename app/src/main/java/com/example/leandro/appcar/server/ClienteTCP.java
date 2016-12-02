@@ -15,14 +15,14 @@ import java.io.*;
 public class ClienteTCP {
 
     private Socket s; //socket res
-    private static String ipServ = ""; //ip do servidor
-    private static int portaServ = 0; //porta do servidor
+    private static String ipServ = "172.16.2.155"; //ip do servidor
+    private static int portaServ = 3322; //porta do servidor
 
     //Método construtor criando o socket, estabelecendo conexão com o servidor
     public ClienteTCP() {
         try {
-            Log.d("SERVER", "IP e porta do servidor: "+"192.168.0.108" + ", " + 3322);
-            s = new Socket("192.168.0.108", 3322);//ip: ip, p: porta
+            Log.d("SERVER", "IP e porta do servidor: "+ipServ + ", " + portaServ);
+            s = new Socket(ipServ, portaServ);//ip: ip, p: porta
         } catch (SocketException e) {
             e.printStackTrace();
             Log.d("SERVER", "erro conexao: "+e.getMessage());
@@ -32,7 +32,7 @@ public class ClienteTCP {
         }
     }
 
-    public String comunica(String msg) {
+    public String socketIO(String msg) {
         String msgRecebida = "";
         try {
             //bufer de leitura
@@ -50,7 +50,7 @@ public class ClienteTCP {
             Boolean flag = true;
             while (flag!=false){
                 linha = br.readLine();
-                if(!linha.equals("null")){
+                if(linha!=null && !linha.equals("null")){
                     msgRecebida += linha;
                 } else {
                     flag = false;
@@ -67,53 +67,24 @@ public class ClienteTCP {
         return msgRecebida;
     }
 
-    public JSONArray onClickConecta() {
-        //para usar um socket é necessário abrir uma nova thread no android
-        final String resposta = null;
-        try {
-            Thread t = new Thread(new Runnable() {
-                public void run() {
-                    //conecta ao servidor tcp
-                    ClienteTCP c = new ClienteTCP();
-
-                    //envia o texto para o servidor e recebe na variavel textoResposta
-                    String msgEnvio = "";
-                    Log.d("[SERVER]msgEnvio", msgEnvio);
-
-                    final String textoResposta = c.comunica(msgEnvio);
-
-                    resposta.concat(textoResposta);
-
-                    //printa resposta no log do android
-                    Log.d("[SERVER]msgResposta", textoResposta);
-                }
-            });
-            t.start();
-        } catch (Exception x) {
-            x.printStackTrace();
-        }
-
-        try {
-            return new JSONArray(resposta);
-        }catch (Exception e){
-            Log.d("Erro", e.toString());
-        }
-        return null;
-    }
-
     public String login(Login login){
         try{
-            return this.comunica(geraJSON("login",new JSONObject().put("login",LoginJSON.preencheJSON(login))));
+            JSONObject json = new JSONObject();
+            json.put("login",LoginJSON.preencheJSON(login));
+            String a = this.socketIO(geraJSON("login",json));
+            return a;
         }catch (Exception e) {
+            System.out.println("DEU ERRO");
+            System.out.println(e.toString());
         }
         return null;
     }
 
-    private String geraJSON(String request, JSONArray array){
+    public static String geraJSON(String request, JSONArray array){
         try{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("request",request);
-            jsonObject.put("object",array);
+            jsonObject.put("array",array);
             return jsonObject.toString();
         }catch (Exception e) {
             Log.d("Erro JSON", e.toString());
@@ -121,7 +92,7 @@ public class ClienteTCP {
         return null;
     }
 
-    private String geraJSON(String request){
+    public static String geraJSON(String request){
         try{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("request",request);
@@ -132,7 +103,7 @@ public class ClienteTCP {
         return null;
     }
 
-    private String geraJSON(String request, JSONObject json){
+    public static String geraJSON(String request, JSONObject json){
         try{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("request",request);

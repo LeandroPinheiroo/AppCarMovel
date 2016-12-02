@@ -53,6 +53,11 @@ public class EnderecoDAO {
         return database.delete("endereco", "cod = ?", new String[] { String.valueOf(endereco.getCod()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("endereco", null, null);
+    }
+
     public List<Endereco> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 

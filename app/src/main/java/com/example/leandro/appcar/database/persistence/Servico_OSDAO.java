@@ -36,9 +36,9 @@ public class Servico_OSDAO {
         values.put("funcionario_codigo",servico_os.getFuncionario().getCodigo());
 
         if (identifier != 0) {
-            return database.update("servico", values, "cod = ?", new String[]{String.valueOf(identifier)});
+            return database.update("servico_os", values, "cod = ?", new String[]{String.valueOf(identifier)});
         } else {
-            return database.insert("servico", null, values);
+            return database.insert("servico_os", null, values);
         }
     }
 
@@ -46,7 +46,12 @@ public class Servico_OSDAO {
     public int remove(Servico_OS servico_os) {
         SQLiteDatabase database = connector.getWritableDatabase();
 
-        return database.delete("servico", "cod = ?", new String[] { String.valueOf(servico_os.getCod()) });
+        return database.delete("servico_os", "cod = ?", new String[] { String.valueOf(servico_os.getCod()) });
+    }
+
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("servico_os", null, null);
     }
 
     public List<Servico_OS> getAll() {

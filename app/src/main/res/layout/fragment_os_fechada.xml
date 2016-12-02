@@ -15,7 +15,7 @@
             android:textSize="40sp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:fontFamily="casual"
+            android:fontFamily="serif"
             android:textColor="@android:color/black" />
 
         <RelativeLayout

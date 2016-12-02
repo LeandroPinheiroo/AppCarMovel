@@ -56,6 +56,11 @@ public class OrdemServicoDAO {
         return database.delete("ordemservico", "cod = ?", new String[] { String.valueOf(ordemServico.getCod()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("ordemservico", null, null);
+    }
+
     public List<OrdemServico> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 

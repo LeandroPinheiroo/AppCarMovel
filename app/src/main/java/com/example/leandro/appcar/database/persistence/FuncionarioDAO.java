@@ -54,6 +54,10 @@ public class FuncionarioDAO {
 
         return database.delete("funcionario", "codigo = ?", new String[] { String.valueOf(pessoa.getCodigo()) });
     }
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("funcionario", null, null);
+    }
 
     public List<Funcionario> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();

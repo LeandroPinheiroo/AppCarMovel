@@ -1,14 +1,13 @@
-package com.example.leandro.appcar.AppBar.fragment;
+package com.example.leandro.appcar.appbar.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.leandro.appcar.AppBar.adapter.ServicoAdapter;
+import com.example.leandro.appcar.appbar.adapter.ServicoAdapter;
 import com.example.leandro.appcar.R;
 import com.example.leandro.appcar.database.models.Servico;
 import com.example.leandro.appcar.database.persistence.ServicoDAO;
@@ -45,7 +44,7 @@ public class FragmentOs extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
         adapter = new ServicoAdapter(this.getContext());

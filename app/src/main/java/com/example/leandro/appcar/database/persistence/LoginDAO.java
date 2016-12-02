@@ -49,6 +49,11 @@ public class LoginDAO {
         return database.delete("login", "cod = ?", new String[] { String.valueOf(login.getCod()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("login", null, null);
+    }
+
     public List<Login> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 
