@@ -1,11 +1,7 @@
 package com.example.leandro.appcar;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -17,15 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.leandro.appcar.database.SQLiteConnector;
-import com.example.leandro.appcar.database.models.Login;
-import com.example.leandro.appcar.server.ClienteTCP;
+import com.example.leandro.appcar.control.persistence.Remember_MeDao;
+import com.example.leandro.appcar.control.server.ClienteTCP;
+import com.example.leandro.appcar.model.Login;
+import com.example.leandro.appcar.model.Remember_Me;
 
 import org.json.JSONObject;
 
-;
-
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
 
     private UserLoginTask mAuthTask = null;
 
@@ -34,9 +29,16 @@ public class LoginActivity extends AppCompatActivity  {
     private View mProgressView;
     private View mLoginFormView;
     private JSONObject resposta;
+    private Remember_MeDao remember_meDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        remember_meDAO = new Remember_MeDao(this.getApplicationContext());
+        if (remember_meDAO.getAll().size() > 0) {
+            startActivity(new Intent(LoginActivity.this, SplashActivity.class));
+            finish();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -66,12 +68,6 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
 
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -118,15 +114,6 @@ public class LoginActivity extends AppCompatActivity  {
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -139,17 +126,16 @@ public class LoginActivity extends AppCompatActivity  {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
             try {
                 Login login = new Login();
                 login.setSenha(mPassword);
                 login.setUsuario(mEmail);
                 resposta = new JSONObject(new ClienteTCP().login(login));
-
             } catch (Exception e) {
                 return false;
             }
+
             return true;
         }
 
@@ -159,9 +145,12 @@ public class LoginActivity extends AppCompatActivity  {
             try {
                 switch (resposta.getString("return")) {
                     case "success":
-                        if(success){
-                            Intent intent = new Intent(LoginActivity.this,TelaSplashActivity.class);
-                            startActivity(intent);
+                        if (success) {
+                            Remember_MeDao remember_meDao = new Remember_MeDao(getBaseContext());
+                            remember_meDao.truncate();
+                            remember_meDao.save(new Remember_Me(resposta.getInt("cod_login")));
+
+                            startActivity(new Intent(LoginActivity.this, SplashActivity.class));
                             finish();
                         }
                         break;
@@ -174,7 +163,7 @@ public class LoginActivity extends AppCompatActivity  {
                         mEmailView.requestFocus();
                         break;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
@@ -184,5 +173,6 @@ public class LoginActivity extends AppCompatActivity  {
             mAuthTask = null;
         }
     }
+
 }
 

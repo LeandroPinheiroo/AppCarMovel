@@ -14,10 +14,10 @@ import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
-import com.example.leandro.appcar.appbar.adapter.CustomExpandableListAdapter;
-import com.example.leandro.appcar.appbar.datasource.ExpandableListDataSource;
-import com.example.leandro.appcar.appbar.fragment.navigation.FragmentNavigationManager;
-import com.example.leandro.appcar.appbar.fragment.navigation.NavigationManager;
+import com.example.leandro.appcar.view.adapter.CustomExpandableListAdapter;
+import com.example.leandro.appcar.view.datasource.ExpandableListDataSource;
+import com.example.leandro.appcar.view.fragment.navigation.FragmentNavigationManager;
+import com.example.leandro.appcar.view.fragment.navigation.NavigationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private ExpandableListAdapter mExpandableListAdapter;
     private List<String> mExpandableListTitle;
     private NavigationManager mNavigationManager;
-    private  View listHeaderView;
+    private View listHeaderView;
     private Map<String, List<String>> mExpandableListData;
 
     @Override
@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
-    public void onClickHeader(){
+
+    public void onClickHeader() {
         listHeaderView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
