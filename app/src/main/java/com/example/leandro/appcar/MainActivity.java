@@ -3,12 +3,10 @@ package com.example.leandro.appcar;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,11 +14,10 @@ import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
-import com.example.leandro.appcar.AppBar.adapter.CustomExpandableListAdapter;
-import com.example.leandro.appcar.AppBar.datasource.ExpandableListDataSource;
-import com.example.leandro.appcar.AppBar.fragment.FragmentMain;
-import com.example.leandro.appcar.AppBar.fragment.navigation.FragmentNavigationManager;
-import com.example.leandro.appcar.AppBar.fragment.navigation.NavigationManager;
+import com.example.leandro.appcar.appbar.adapter.CustomExpandableListAdapter;
+import com.example.leandro.appcar.appbar.datasource.ExpandableListDataSource;
+import com.example.leandro.appcar.appbar.fragment.navigation.FragmentNavigationManager;
+import com.example.leandro.appcar.appbar.fragment.navigation.NavigationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +29,11 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private String[] items;
-
     private ExpandableListView mExpandableListView;
     private ExpandableListAdapter mExpandableListAdapter;
     private List<String> mExpandableListTitle;
     private NavigationManager mNavigationManager;
-
+    private  View listHeaderView;
     private Map<String, List<String>> mExpandableListData;
 
     @Override
@@ -54,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
         initItems();
 
         LayoutInflater inflater = getLayoutInflater();
-        View listHeaderView = inflater.inflate(R.layout.nav_header, null, false);
+        listHeaderView = inflater.inflate(R.layout.nav_header, null, false);
+        this.onClickHeader();
+
         mExpandableListView.addHeaderView(listHeaderView);
 
         mExpandableListData = ExpandableListDataSource.getData(this);
@@ -69,6 +67,17 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+    public void onClickHeader(){
+        listHeaderView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mNavigationManager.showFragmentMain();
+                getSupportActionBar().setTitle("AppCar");
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+
+            }
+        });
     }
 
     private void initItems() {
@@ -97,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
                 String selectedItem = ((List) (mExpandableListData.get(mExpandableListTitle.get(groupPosition)))).get(childPosition).toString();
-mActivityTitle = selectedItem;
+                mActivityTitle = selectedItem;
                 getSupportActionBar().setTitle(selectedItem);
 
                 if (items[0].equals(mExpandableListTitle.get(groupPosition))) {
@@ -109,7 +118,7 @@ mActivityTitle = selectedItem;
                             mNavigationManager.showFragmentOsAberta();
                             break;
                         case "Fechadas":
-                            mNavigationManager.showFragmentOs();
+                            mNavigationManager.showFragmentOsFechada();
                             break;
                     }
 

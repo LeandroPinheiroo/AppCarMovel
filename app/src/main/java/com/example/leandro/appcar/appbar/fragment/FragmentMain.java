@@ -1,12 +1,7 @@
-package com.example.leandro.appcar.AppBar.fragment;
+package com.example.leandro.appcar.appbar.fragment;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +10,13 @@ import com.example.leandro.appcar.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentServicosRealizados#newInstance} factory method to
+ * Use the {@link FragmentMain#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentServicosRealizados extends Fragment {
+public class FragmentMain extends Fragment {
 
 
-    public FragmentServicosRealizados() {
+    public FragmentMain() {
         // Required empty public constructor
     }
 
@@ -31,8 +26,8 @@ public class FragmentServicosRealizados extends Fragment {
      *
      * @return A new instance of fragment FragmentAction.
      */
-    public static FragmentServicosRealizados newInstance() {
-        FragmentServicosRealizados fragmentAction = new FragmentServicosRealizados();
+    public static FragmentMain newInstance() {
+        FragmentMain fragmentAction = new FragmentMain();
         Bundle args = new Bundle();
         fragmentAction.setArguments(args);
 
@@ -48,11 +43,11 @@ public class FragmentServicosRealizados extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_servicos_realizados, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view,  Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 }

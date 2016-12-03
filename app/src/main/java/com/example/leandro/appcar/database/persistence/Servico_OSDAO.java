@@ -36,9 +36,9 @@ public class Servico_OSDAO {
         values.put("funcionario_codigo",servico_os.getFuncionario().getCodigo());
 
         if (identifier != 0) {
-            return database.update("servico", values, "cod = ?", new String[]{String.valueOf(identifier)});
+            return database.update("servico_os", values, "cod = ?", new String[]{String.valueOf(identifier)});
         } else {
-            return database.insert("servico", null, values);
+            return database.insert("servico_os", null, values);
         }
     }
 
@@ -46,7 +46,12 @@ public class Servico_OSDAO {
     public int remove(Servico_OS servico_os) {
         SQLiteDatabase database = connector.getWritableDatabase();
 
-        return database.delete("servico", "cod = ?", new String[] { String.valueOf(servico_os.getCod()) });
+        return database.delete("servico_os", "cod = ?", new String[] { String.valueOf(servico_os.getCod()) });
+    }
+
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("servico_os", null, null);
     }
 
     public List<Servico_OS> getAll() {
@@ -54,7 +59,7 @@ public class Servico_OSDAO {
 
         List<Servico_OS> servicos = new ArrayList<>();
 
-        Cursor cursor = database.query("servidor", null, null, null, null, null, null);
+        Cursor cursor = database.query("servico_os", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Servico_OS servico_os = new Servico_OS();
@@ -72,7 +77,7 @@ public class Servico_OSDAO {
     public Servico_OS get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Servico_OS",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("servico_os",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 

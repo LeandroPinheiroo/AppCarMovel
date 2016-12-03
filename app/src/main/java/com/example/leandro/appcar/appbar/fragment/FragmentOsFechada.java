@@ -1,18 +1,13 @@
-package com.example.leandro.appcar.AppBar.fragment;
+package com.example.leandro.appcar.appbar.fragment;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.leandro.appcar.AppBar.adapter.OrdemServicoAdapter;
+import com.example.leandro.appcar.appbar.adapter.OrdemServicoAdapter;
 import com.example.leandro.appcar.R;
 import com.example.leandro.appcar.database.models.OrdemServico;
 import com.example.leandro.appcar.database.persistence.OrdemServicoDAO;
@@ -57,7 +52,7 @@ public class FragmentOsFechada extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view,  Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         for (OrdemServico os:  new OrdemServicoDAO(this.getContext()).getAll()){
             if (os.getSituacao() == 3){

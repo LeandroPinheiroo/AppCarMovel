@@ -51,6 +51,11 @@ public class LogDAO {
         return database.delete("log", "cod = ?", new String[] { String.valueOf(log.getCod()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("log", null, null);
+    }
+
     public List<Log> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 
@@ -76,7 +81,7 @@ public class LogDAO {
     public Log get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Log",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("log",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 

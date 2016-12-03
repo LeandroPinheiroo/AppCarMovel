@@ -56,12 +56,17 @@ public class OrdemServicoDAO {
         return database.delete("ordemservico", "cod = ?", new String[] { String.valueOf(ordemServico.getCod()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("ordemservico", null, null);
+    }
+
     public List<OrdemServico> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 
         List<OrdemServico> ordemServicos = new ArrayList<>();
 
-        Cursor cursor = database.query("servidor", null, null, null, null, null, null);
+        Cursor cursor = database.query("ordemservico", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 OrdemServico ordemServico = new OrdemServico();
@@ -87,7 +92,7 @@ public class OrdemServicoDAO {
     public OrdemServico get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("OrdemServico",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("ordemservico",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 

@@ -7,27 +7,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:text="@string/tituloOS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            android:textSize="40sp"
-            android:textAlignment="center" />
+        android:orientation="vertical"
+        android:background="#E0E0E0">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:background="@color/white">
             <TextView
                 android:text="Ordem de Serviço"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textOs"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:textColor="Black" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -90,13 +85,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:background="@color/white">
             <TextView
                 android:text="Cliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textCliente"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:textColor="Black" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -177,13 +174,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:background="@color/white">
             <TextView
                 android:text="Carro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/texCarro"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:textColor="Black" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -263,27 +262,25 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:background="@color/white">
             <TextView
                 android:text="Serviços"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textServico"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:textColor="Black" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/listOrcamentos"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
 
         </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listOrcamentos"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
-    </LinearLayout>
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -297,7 +294,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textValor"
                 android:textAlignment="viewEnd"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:textColorLink="?attr/actionMenuTextColor" />
 
             <TextView
                 android:text="R$00,00"

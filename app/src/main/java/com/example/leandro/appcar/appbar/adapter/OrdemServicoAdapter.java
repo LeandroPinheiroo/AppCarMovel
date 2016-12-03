@@ -1,4 +1,4 @@
-package com.example.leandro.appcar.AppBar.adapter;
+package com.example.leandro.appcar.appbar.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

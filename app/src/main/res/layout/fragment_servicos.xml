@@ -2,7 +2,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-    tools:context="com.example.leandro.appcar.AppBar.fragment.FragmentServicos">
+    tools:context="com.example.leandro.appcar.appbar.fragment.FragmentServicos">
 
 
     <RelativeLayout
@@ -16,7 +16,9 @@
             android:id="@+id/textTitulo"
             android:textSize="40sp"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:fontFamily="serif"
+            android:textColor="@android:color/black" />
 
         <RelativeLayout
             android:layout_width="match_parent"

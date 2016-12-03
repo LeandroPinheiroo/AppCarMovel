@@ -5,9 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-
 import com.example.leandro.appcar.database.SQLiteConnector;
 import com.example.leandro.appcar.database.models.Servico;
+import com.example.leandro.appcar.server.ClienteTCP;
+import com.example.leandro.appcar.server.rest.ServicoJSON;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +37,6 @@ public class ServicoDAO {
         ContentValues values = new ContentValues();
         values.put("descricao", servico.getDescricao());
         values.put("valor", servico.getValor());
-
-
         if (identifier != 0) {
             return database.update("servico", values, "cod = ?", new String[]{String.valueOf(identifier)});
         } else {
@@ -49,12 +51,17 @@ public class ServicoDAO {
         return database.delete("servico", "cod = ?", new String[] { String.valueOf(servico.getCod()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("servico", null, null);
+    }
+
     public List<Servico> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 
         List<Servico> servicos = new ArrayList<>();
 
-        Cursor cursor = database.query("servidor", null, null, null, null, null, null);
+        Cursor cursor = database.query("servico", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Servico servico = new Servico();
@@ -71,7 +78,7 @@ public class ServicoDAO {
     public Servico get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Servico",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("servico",null,"cod=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -80,5 +87,16 @@ public class ServicoDAO {
         servico.setValor((cursor.getDouble(cursor.getColumnIndex("valor"))));
         servico.setDescricao((cursor.getString(cursor.getColumnIndex("descricao"))));
         return servico;
+    }
+
+    public void getSocket(){
+        try {
+            JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Servico_All"))).getJSONObject("return").getJSONArray("servico");
+            for (int i=0; i < array.length(); i++){
+                this.save(ServicoJSON.getServicoJSON(array.getJSONObject(i)));
+            }
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
     }
 }

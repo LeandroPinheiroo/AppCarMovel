@@ -55,12 +55,17 @@ public class PessoaDAO {
         return database.delete("pessoa", "codigo = ?", new String[] { String.valueOf(pessoa.getCodigo()) });
     }
 
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("pessoa", null, null);
+    }
+
     public List<Pessoa> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
 
         List<Pessoa> pessoas = new ArrayList<>();
 
-        Cursor cursor = database.query("servidor", null, null, null, null, null, null);
+        Cursor cursor = database.query("pessoa", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Pessoa pessoa = new Pessoa();
@@ -84,7 +89,7 @@ public class PessoaDAO {
     public Pessoa get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Pessoa",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("pessoa",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 

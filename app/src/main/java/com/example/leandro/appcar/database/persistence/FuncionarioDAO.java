@@ -54,6 +54,10 @@ public class FuncionarioDAO {
 
         return database.delete("funcionario", "codigo = ?", new String[] { String.valueOf(pessoa.getCodigo()) });
     }
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("funcionario", null, null);
+    }
 
     public List<Funcionario> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
@@ -87,7 +91,7 @@ public class FuncionarioDAO {
     public Funcionario get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Funcionario",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
+        Cursor cursor = db.query("funcionario",null,"codigo=?",new String[] { String.valueOf(id) },null,null,null,null);
         if (cursor != null)
             cursor.moveToFirst();
 

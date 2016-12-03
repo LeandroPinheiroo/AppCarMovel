@@ -54,6 +54,10 @@ public class ClienteDAO {
 
         return database.delete("cliente", "codigo = ?", new String[] { String.valueOf(pessoa.getCodigo()) });
     }
+    public void truncate(){
+        SQLiteDatabase database = connector.getWritableDatabase();
+        database.delete("cliente", null, null);
+    }
 
     public List<Cliente> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
