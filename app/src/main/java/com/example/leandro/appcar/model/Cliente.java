@@ -13,7 +13,7 @@ public class Cliente extends Pessoa implements Serializable {
         super();
     }
 
-    public Cliente(String nome, String sexo, String email, String telefoneM, String telefoneF, String cpf, String rg, int tipo, Endereco endereco) {
+    public Cliente(String nome, String sexo, String email, String telefoneM, String telefoneF, String cpf, String rg, int tipo, int endereco) {
         super(nome, cpf, sexo, email, telefoneM, telefoneF, endereco, rg);
     }
 

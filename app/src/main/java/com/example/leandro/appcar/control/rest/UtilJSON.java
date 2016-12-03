@@ -1,6 +1,5 @@
 package com.example.leandro.appcar.control.rest;
 
-
 import org.json.JSONObject;
 
 public class UtilJSON {

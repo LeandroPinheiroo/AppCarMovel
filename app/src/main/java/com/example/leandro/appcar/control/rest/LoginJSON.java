@@ -1,12 +1,11 @@
 package com.example.leandro.appcar.control.rest;
-
 import com.example.leandro.appcar.model.Login;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
 
 public class LoginJSON {
 
@@ -15,11 +14,9 @@ public class LoginJSON {
         Login login = new Login();
         try {
             //pega do json os registros da tag login
-            JSONArray vetor = (JSONArray) json.get("login");
-            JSONObject object = (JSONObject) vetor.get(0);
-            login.setCod(object.getInt("cod"));
-            login.setUsuario(object.getString("usuario"));
-            login.setSenha(object.getString("senha"));
+            login.setCod(json.getInt("cod"));
+            login.setUsuario(json.getString("usuario"));
+            login.setSenha(json.getString("senha"));
         } catch (Exception x) {
         }
         return login;

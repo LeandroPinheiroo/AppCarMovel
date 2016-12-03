@@ -2,21 +2,19 @@ package com.example.leandro.appcar.control.rest;
 
 import com.example.leandro.appcar.model.Servico;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 public class ServicoJSON {
 
-    public static Servico getServicoJSON(JSONObject json) {
+    public static Servico getServicoJSON(JSONObject object) {
         //instancia vetor de servicos
         Servico servico = new Servico();
         try {
             //pega do json os registros da tag servico
-            JSONArray vetor = (JSONArray) json.get("servico");
-            JSONObject object = (JSONObject) vetor.get(0);
             servico.setCod(object.getInt("cod"));
             servico.setDescricao(object.getString("descricao"));
             servico.setValor(object.getDouble("valor"));
@@ -55,6 +53,7 @@ public class ServicoJSON {
             registro.put("cod", servico.getCod());
             registro.put("descricao", servico.getDescricao());
             registro.put("valor", servico.getValor());
+            return registro;
         } catch (JSONException k) {
         }
         return null;

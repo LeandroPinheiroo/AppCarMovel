@@ -1,24 +1,19 @@
 package com.example.leandro.appcar.control.rest;
 
-import com.example.leandro.appcar.control.persistence.ClienteDao;
 import com.example.leandro.appcar.model.Carro;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 public class CarroJSON {
 
-    public static Carro getCarroJSON(JSONObject json) {
+    public static Carro getCarroJSON(JSONObject object) {
         //instancia vetor de carros
         Carro carro = new Carro();
         try {
             //pega do json os registros da tag carro
-            JSONArray vetor = (JSONArray) json.get("carro");
-            JSONObject object = (JSONObject) vetor.get(0);
             carro.setCod(object.getInt("cod"));
             carro.setMarca(object.getString("marca"));
             carro.setModelo(object.getString("modelo"));
@@ -28,7 +23,7 @@ public class CarroJSON {
             carro.setKm(object.getString("km"));
             carro.setPlaca(object.getString("placa"));
             carro.setObs(object.getString("obs"));
-            carro.setDono(new ClienteDao(null).get(object.getInt("dono_codigo")));
+            carro.setDono(object.getInt("dono_codigo"));
         } catch (Exception x) {
         }
         return carro;
@@ -39,15 +34,12 @@ public class CarroJSON {
         JSONObject registro;
         //cria um registro primeiro
         for (Carro carro : carros) {
-            registro = preencheJSON(carro);
-            //adiciona registro à lista de registros
-            tabelaCarros.add(registro);
+            tabelaCarros.add(preencheJSON(carro));
         }
-
         //adiciona tabela
         JSONObject bd = new JSONObject();
         try {
-            bd.putOpt("carro", (Object) tabelaCarros);
+            bd.put("carro", (Object) tabelaCarros);
         } catch (JSONException u) {
         }
         return UtilJSON.limpaJSON(bd);
@@ -69,7 +61,7 @@ public class CarroJSON {
             registro.put("km", carro.getKm());
             registro.put("placa", carro.getPlaca());
             registro.put("carObs", carro.getObs());
-            registro.put("dono_codigo", carro.getDono().getCodigo());
+            registro.put("dono_codigo", carro.getDono());
             return registro;
         } catch (JSONException k) {
         }

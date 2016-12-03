@@ -33,6 +33,7 @@ public class ServicoDao {
         SQLiteDatabase database = connector.getWritableDatabase();
         long identifier = servico.getCod();
         ContentValues values = new ContentValues();
+        values.put("cod", servico.getCod());
         values.put("descricao", servico.getDescricao());
         values.put("valor", servico.getValor());
         if (identifier != 0) {
@@ -47,11 +48,6 @@ public class ServicoDao {
         SQLiteDatabase database = connector.getWritableDatabase();
 
         return database.delete("servico", "cod = ?", new String[]{String.valueOf(servico.getCod())});
-    }
-
-    public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        database.delete("servico", null, null);
     }
 
     public List<Servico> getAll() {
@@ -71,6 +67,7 @@ public class ServicoDao {
         }
 
         cursor.close();
+        database.close();
         return servicos;
     }
 
@@ -85,13 +82,24 @@ public class ServicoDao {
         servico.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
         servico.setValor((cursor.getDouble(cursor.getColumnIndex("valor"))));
         servico.setDescricao((cursor.getString(cursor.getColumnIndex("descricao"))));
+        cursor.close();
+        db.close();
         return servico;
     }
 
-    public void getSocket() {
+    public void truncate() {
+        SQLiteDatabase database = connector.getWritableDatabase();
+        if (this.getAll().size() > 0) {
+            database.delete("servico", null, null);
+        }
+    }
+
+    public void populateSocket() {
+        this.truncate();
         try {
             JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Servico_All"))).getJSONObject("return").getJSONArray("servico");
             for (int i = 0; i < array.length(); i++) {
+                System.out.println(array.getJSONObject(i));
                 this.save(ServicoJSON.getServicoJSON(array.getJSONObject(i)));
             }
         } catch (Exception e) {

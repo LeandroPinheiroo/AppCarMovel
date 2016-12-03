@@ -1,10 +1,7 @@
 package com.example.leandro.appcar.control.rest;
 
 import com.example.leandro.appcar.model.OrdemServico;
-import com.example.leandro.appcar.control.persistence.CarroDao;
-import com.example.leandro.appcar.control.persistence.ClienteDao;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,16 +10,14 @@ import java.util.ArrayList;
 
 public class OrdemServicoJSON {
 
-    public static OrdemServico getOrdemServicoJSON(JSONObject json) {
+    public static OrdemServico getOrdemServicoJSON(JSONObject object) {
         //instancia vetor de oss
         OrdemServico os = new OrdemServico();
         try {
             //pega do json os registros da tag os
-            JSONArray vetor = (JSONArray) json.get("ordemservico");
-            JSONObject object = (JSONObject) vetor.get(0);
             os.setCod(object.getInt("cod"));
-            os.setCliente(new ClienteDao(null).get(object.getInt("cliente_codigo")));
-            os.setCarro(new CarroDao(null).get(object.getInt("carro_cod")));
+            os.setCliente(object.getInt("cliente_codigo"));
+            os.setCarro(object.getInt("carro_cod"));
             os.setData(Timestamp.valueOf(object.getString("data")));
             os.setSituacao(object.getInt("situacao"));
             os.setTipo(object.getString("tipo"));
@@ -60,12 +55,13 @@ public class OrdemServicoJSON {
         JSONObject registro = new JSONObject();
         try {
             registro.put("cod", os.getCod());
-            registro.put("cliente_codigo", os.getCliente().getCodigo());
-            registro.put("carro_cod", os.getCarro().getCod());
+            registro.put("cliente_codigo", os.getCliente());
+            registro.put("carro_cod", os.getCarro());
             registro.put("data", os.getData().toString());
             registro.put("descricao", os.getDescricao());
             registro.put("situacao", os.getSituacao());
             registro.put("tipo", os.getTipo());
+            return registro;
         } catch (JSONException k) {
         }
         return null;

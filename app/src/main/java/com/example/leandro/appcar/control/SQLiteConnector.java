@@ -52,7 +52,7 @@ public class SQLiteConnector extends SQLiteOpenHelper {
                         " cod integer primary key," +
                         " funcionario_codigo integer," +
                         " ordemservico_cod integer," +
-                        " servico_cod" + ");");
+                        " servico_cod integer" + ");");
         database.execSQL(
                 "create table if not exists funcionario(" +
                         " codigo integer," +
@@ -67,7 +67,7 @@ public class SQLiteConnector extends SQLiteOpenHelper {
                         " rg text," +
                         " sexo text," +
                         " telefoneF text," +
-                        " telefonM text," +
+                        " telefoneM text," +
                         " endereco_cod integer" + ");");
         database.execSQL(
                 "create table if not exists cliente(" +

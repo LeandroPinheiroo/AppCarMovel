@@ -6,15 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.leandro.appcar.control.SQLiteConnector;
+import com.example.leandro.appcar.control.rest.ClienteJSON;
+import com.example.leandro.appcar.control.server.ClienteTCP;
 import com.example.leandro.appcar.model.Cliente;
 import com.example.leandro.appcar.model.Pessoa;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by alunos on 22/11/16.
- */
 public class ClienteDao {
     private SQLiteConnector connector;
     private Context context;
@@ -30,14 +32,7 @@ public class ClienteDao {
         SQLiteDatabase database = connector.getWritableDatabase();
         long identifier = cliente.getCodigo();
         ContentValues values = new ContentValues();
-        values.put("nome", cliente.getNome());
-        values.put("cpf", cliente.getCpf());
-        values.put("sexo", cliente.getSexo());
-        values.put("email", cliente.getEmail());
-        values.put("telefoneM", cliente.getTelefoneM());
-        values.put("telefoneF", cliente.getTelefoneF());
-        values.put("endereco", cliente.getEndereco().getCod());
-        values.put("rg", cliente.getRg());
+        values.put("codigo", cliente.getCodigo());
 
         if (identifier != 0) {
             return database.update("cliente", values, "codigo = ?", new String[]{String.valueOf(identifier)});
@@ -53,10 +48,6 @@ public class ClienteDao {
         return database.delete("cliente", "codigo = ?", new String[]{String.valueOf(pessoa.getCodigo())});
     }
 
-    public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        database.delete("cliente", null, null);
-    }
 
     public List<Cliente> getAll() {
         SQLiteDatabase database = connector.getReadableDatabase();
@@ -78,24 +69,24 @@ public class ClienteDao {
                 cliente.setTelefoneM(pessoa.getTelefoneM());
                 cliente.setTelefoneF(pessoa.getTelefoneF());
                 cliente.setRg(pessoa.getRg());
-                cliente.setEndereco(new EnderecoDao(this.context).get(cursor.getInt(cursor.getColumnIndex("endereco_cod"))));
+                cliente.setEndereco(pessoa.getEndereco());
                 clientes.add(cliente);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
+        database.close();
         return clientes;
     }
 
     public Cliente get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
 
-        Cursor cursor = db.query("Cliente", null, "codigo=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        Cursor cursor = db.query("cliente", null, "codigo=?", new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         Cliente cliente = new Cliente();
-        Pessoa pessoa = new PessoaDao(this.context).get(id);
+        Pessoa pessoa = new PessoaDao(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
         cliente.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
         cliente.setNome(pessoa.getNome());
         cliente.setCpf(pessoa.getCpf());
@@ -104,9 +95,32 @@ public class ClienteDao {
         cliente.setEmail(pessoa.getEmail());
         cliente.setTelefoneM(pessoa.getTelefoneM());
         cliente.setTelefoneF(pessoa.getTelefoneF());
-        cliente.setEndereco(new EnderecoDao(this.context).get(cursor.getInt(cursor.getColumnIndex("endereco_cod"))));
+        cliente.setEndereco(pessoa.getEndereco());
         cliente.setRg(pessoa.getRg());
+        cursor.close();
+        db.close();
         return cliente;
+    }
+
+    public void truncate() {
+        SQLiteDatabase database = connector.getWritableDatabase();
+        if (this.getAll().size() > 0) {
+            database.delete("cliente", null, null);
+            database.close();
+        }
+    }
+
+    public void populateSocket() {
+        this.truncate();
+        try {
+            JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Cliente_All"))).getJSONObject("return").getJSONArray("cliente");
+            for (int i = 0; i < array.length(); i++) {
+                System.out.println(array.getJSONObject(i));
+                this.save(ClienteJSON.getClienteJSON(array.getJSONObject(i)));
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
 }

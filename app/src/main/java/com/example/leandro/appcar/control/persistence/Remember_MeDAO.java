@@ -26,7 +26,7 @@ public class Remember_MeDao {
     public long save(Remember_Me remember_me) {
         SQLiteDatabase database = connector.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("nome", remember_me.getCod_login());
+        values.put("cod_login", remember_me.getCod_login());
         return database.insert("remember_me", null, values);
     }
 
@@ -34,11 +34,6 @@ public class Remember_MeDao {
     public int remove(Remember_Me remember_me) {
         SQLiteDatabase database = connector.getWritableDatabase();
         return database.delete("remember_me", "cod_login = ?", new String[]{String.valueOf(remember_me.getCod_login())});
-    }
-
-    public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        database.delete("remember_me", null, null);
     }
 
 
@@ -54,7 +49,7 @@ public class Remember_MeDao {
                 remember_me.add(new Remember_Me(cursor.getInt(cursor.getColumnIndex("cod_login"))));
             } while (cursor.moveToNext());
         }
-
+database.close();
         cursor.close();
         return remember_me;
     }
@@ -68,8 +63,14 @@ public class Remember_MeDao {
 
         Remember_Me remember_me = new Remember_Me();
         remember_me.setCod_login(cursor.getInt(cursor.getColumnIndex("cod_login")));
-
+        cursor.close();
+        db.close();
         return remember_me;
     }
-
+    public void truncate() {
+        SQLiteDatabase database = connector.getWritableDatabase();
+        if (this.getAll().size() > 0) {
+            database.delete("remember_me", null, null);
+        }
+    }
 }

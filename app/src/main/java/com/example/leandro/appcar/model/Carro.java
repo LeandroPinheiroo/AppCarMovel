@@ -15,14 +15,13 @@ public class Carro implements Serializable {
     private String km;
     private String placa;
     private String obs;
-    private Cliente dono;
-    private List<OrdemServico> ordens;
+    private int dono;
 
     public Carro() {
 
     }
 
-    public Carro(int cod, String marca, String modelo, String cor, String ano, String chassi, String km, String placa, String obs, Cliente dono) {
+    public Carro(int cod, String marca, String modelo, String cor, String ano, String chassi, String km, String placa, String obs, int dono) {
         this.cod = cod;
         this.marca = marca;
         this.modelo = modelo;
@@ -107,22 +106,11 @@ public class Carro implements Serializable {
         this.obs = obs;
     }
 
-
-    public Cliente getDono() {
+    public int getDono() {
         return dono;
     }
 
-    public void setDono(Cliente dono) {
+    public void setDono(int dono) {
         this.dono = dono;
     }
-
-    public List<OrdemServico> getOrdens() {
-        return ordens;
-    }
-
-    public void setOrdens(List<OrdemServico> ordens) {
-        this.ordens = ordens;
-    }
-
-
 }

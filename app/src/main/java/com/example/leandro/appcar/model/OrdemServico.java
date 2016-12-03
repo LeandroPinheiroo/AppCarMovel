@@ -10,30 +10,22 @@ public class OrdemServico implements Serializable {
     private String tipo;
     private Timestamp data;
     private int situacao;
-    private Cliente cliente;
-    private Carro carro;
+    private int cliente;
+    private int carro;
     private String descricao;
 
-    public OrdemServico(String tipo, int situacao, Carro carro, Cliente cliente, String descricao) {
+    public OrdemServico() {
+    }
+
+    public OrdemServico(int cod, String tipo, Timestamp data, int situacao, int cliente, int carro, String descricao) {
+        this.cod = cod;
         this.tipo = tipo;
+        this.data = data;
         this.situacao = situacao;
         this.cliente = cliente;
         this.carro = carro;
         this.descricao = descricao;
     }
-
-    public OrdemServico() {
-
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
 
     public int getCod() {
         return cod;
@@ -67,20 +59,27 @@ public class OrdemServico implements Serializable {
         this.situacao = situacao;
     }
 
-    public Cliente getCliente() {
+    public int getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(int cliente) {
         this.cliente = cliente;
     }
 
-    public Carro getCarro() {
+    public int getCarro() {
         return carro;
     }
 
-    public void setCarro(Carro carro) {
+    public void setCarro(int carro) {
         this.carro = carro;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }

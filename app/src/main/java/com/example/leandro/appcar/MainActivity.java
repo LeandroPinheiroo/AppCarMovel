@@ -1,19 +1,23 @@
 package com.example.leandro.appcar;
 
-
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
+import com.example.leandro.appcar.control.persistence.FuncionarioDao;
+import com.example.leandro.appcar.control.persistence.PessoaDao;
+import com.example.leandro.appcar.model.Funcionario;
 import com.example.leandro.appcar.view.adapter.CustomExpandableListAdapter;
 import com.example.leandro.appcar.view.datasource.ExpandableListDataSource;
 import com.example.leandro.appcar.view.fragment.navigation.FragmentNavigationManager;
@@ -35,11 +39,24 @@ public class MainActivity extends AppCompatActivity {
     private NavigationManager mNavigationManager;
     private View listHeaderView;
     private Map<String, List<String>> mExpandableListData;
+    private FuncionarioDao funcionarioDao;
+    private Funcionario funcionario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        funcionarioDao = new FuncionarioDao(this.getApplicationContext());
+
+        for(Funcionario fun : funcionarioDao.getAll()){
+            System.out.println("AAA");
+            System.out.println("FUNNNNNNNNNNN:"+fun.getCodigo());
+        }
+
+       // funcionario = funcionarioDao.getLogin(getIntent().getIntExtra("cod_login", 0));
+
+       // Toast.makeText(this.getBaseContext(), "Bem Vindo " + funcionario.getNome() + ".", Toast.LENGTH_SHORT);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
@@ -144,18 +161,16 @@ public class MainActivity extends AppCompatActivity {
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
 
-            /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle(R.string.menu);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                invalidateOptionsMenu();
             }
 
-            /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle(mActivityTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                invalidateOptionsMenu();
             }
         };
 
@@ -166,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
 
@@ -178,19 +192,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }

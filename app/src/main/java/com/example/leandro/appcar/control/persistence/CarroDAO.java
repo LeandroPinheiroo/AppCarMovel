@@ -32,6 +32,7 @@ public class CarroDao {
         SQLiteDatabase database = connector.getWritableDatabase();
         Integer identifier = carro.getCod();
         ContentValues values = new ContentValues();
+        values.put("cod", carro.getCod());
         values.put("marca", carro.getMarca());
         values.put("modelo", carro.getModelo());
         values.put("cor", carro.getCor());
@@ -40,7 +41,7 @@ public class CarroDao {
         values.put("km", carro.getKm());
         values.put("placa", carro.getPlaca());
         values.put("obs", carro.getObs());
-        values.put("dono_codigo", carro.getDono().getCodigo());
+        values.put("dono_codigo", carro.getDono());
 
         if (identifier != 0) {
             return database.update("carro", values, "cod = ?", new String[]{String.valueOf(identifier)});
@@ -53,11 +54,6 @@ public class CarroDao {
     public int remove(Carro carro) {
         SQLiteDatabase database = connector.getWritableDatabase();
         return database.delete("carro", "cod = ?", new String[]{String.valueOf(carro.getCod())});
-    }
-
-    public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        database.delete("carro", null, null);
     }
 
     public List<Carro> getAll() {
@@ -78,11 +74,11 @@ public class CarroDao {
                 carro.setKm((cursor.getString(cursor.getColumnIndex("km"))));
                 carro.setPlaca((cursor.getString(cursor.getColumnIndex("placa"))));
                 carro.setObs((cursor.getString(cursor.getColumnIndex("obs"))));
-                carro.setDono(new ClienteDao(this.context).get(cursor.getInt(cursor.getColumnIndex("dono_codigo"))));
+                carro.setDono(cursor.getInt(cursor.getColumnIndex("dono_codigo")));
                 carros.add(carro);
             } while (cursor.moveToNext());
         }
-
+        database.close();
         cursor.close();
         return carros;
     }
@@ -104,14 +100,27 @@ public class CarroDao {
         carro.setKm((cursor.getString(cursor.getColumnIndex("km"))));
         carro.setPlaca((cursor.getString(cursor.getColumnIndex("placa"))));
         carro.setObs((cursor.getString(cursor.getColumnIndex("obs"))));
-        carro.setDono(new ClienteDao(this.context).get(cursor.getInt(cursor.getColumnIndex("dono_codigo"))));
+        carro.setDono(cursor.getInt(cursor.getColumnIndex("dono_codigo")));
+        cursor.close();
+        db.close();
         return carro;
+
     }
 
-    public void getSocket() {
+    public void truncate() {
+        SQLiteDatabase database = connector.getWritableDatabase();
+        if(this.getAll().size()>0){
+            database.delete("carro", null, null);
+            database.close();
+        }
+    }
+
+    public void populateSocket() {
+        this.truncate();
         try {
             JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Carro_All"))).getJSONObject("return").getJSONArray("carro");
             for (int i = 0; i < array.length(); i++) {
+                System.out.println(array.getJSONObject(i));
                 this.save(CarroJSON.getCarroJSON(array.getJSONObject(i)));
             }
         } catch (Exception e) {

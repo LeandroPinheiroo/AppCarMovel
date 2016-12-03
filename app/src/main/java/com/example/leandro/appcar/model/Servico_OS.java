@@ -3,20 +3,19 @@ package com.example.leandro.appcar.model;
 public class Servico_OS {
 
     private int cod;
-    private Servico servico;
-    private OrdemServico ordemservico;
-    private Funcionario funcionario;
-
-    public Servico_OS(Servico servico, OrdemServico osCod, Funcionario mecCod) {
-        this.servico = servico;
-        this.ordemservico = osCod;
-        this.funcionario = mecCod;
-    }
+    private int servico;
+    private int ordemservico;
+    private int funcionario;
 
     public Servico_OS() {
-
     }
 
+    public Servico_OS(int cod, int servico, int ordemservico, int funcionario) {
+        this.cod = cod;
+        this.servico = servico;
+        this.ordemservico = ordemservico;
+        this.funcionario = funcionario;
+    }
 
     public int getCod() {
         return cod;
@@ -26,29 +25,27 @@ public class Servico_OS {
         this.cod = cod;
     }
 
-
-    public Servico getServico() {
+    public int getServico() {
         return servico;
     }
 
-    public void setServico(Servico servico) {
+    public void setServico(int servico) {
         this.servico = servico;
     }
 
-    public OrdemServico getOrdemservico() {
+    public int getOrdemservico() {
         return ordemservico;
     }
 
-    public void setOrdemservico(OrdemServico ordemservico) {
+    public void setOrdemservico(int ordemservico) {
         this.ordemservico = ordemservico;
     }
 
-    public Funcionario getFuncionario() {
+    public int getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
+    public void setFuncionario(int funcionario) {
         this.funcionario = funcionario;
     }
-
 }

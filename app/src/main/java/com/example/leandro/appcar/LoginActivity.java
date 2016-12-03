@@ -34,8 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         remember_meDAO = new Remember_MeDao(this.getApplicationContext());
+
         if (remember_meDAO.getAll().size() > 0) {
-            startActivity(new Intent(LoginActivity.this, SplashActivity.class));
+            Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+            intent.putExtra("cod_login",remember_meDAO.getAll().get(0).getCod_login());
+            startActivity(intent);
             finish();
         }
 
@@ -150,7 +153,9 @@ public class LoginActivity extends AppCompatActivity {
                             remember_meDao.truncate();
                             remember_meDao.save(new Remember_Me(resposta.getInt("cod_login")));
 
-                            startActivity(new Intent(LoginActivity.this, SplashActivity.class));
+                            Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+                            intent.putExtra("cod_login",resposta.getInt("cod_login"));
+                            startActivity(intent);
                             finish();
                         }
                         break;

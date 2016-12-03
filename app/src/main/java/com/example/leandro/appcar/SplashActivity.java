@@ -9,25 +9,36 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.example.leandro.appcar.control.persistence.CarroDao;
+import com.example.leandro.appcar.control.persistence.ClienteDao;
+import com.example.leandro.appcar.control.persistence.EnderecoDao;
+import com.example.leandro.appcar.control.persistence.FuncionarioDao;
+import com.example.leandro.appcar.control.persistence.LoginDao;
+import com.example.leandro.appcar.control.persistence.OrdemServicoDao;
+import com.example.leandro.appcar.control.persistence.PessoaDao;
 import com.example.leandro.appcar.control.persistence.ServicoDao;
+import com.example.leandro.appcar.control.persistence.Servico_OSDao;
+import com.example.leandro.appcar.model.Funcionario;
 
 public class SplashActivity extends AppCompatActivity {
 
     private ImageView splash;
-    AnimationDrawable splashAnimation;
+    private AnimationDrawable splashAnimation;
     private static Context ctx;
+    private int cod_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_splash);
 
-        splash = (ImageView) findViewById(R.id.ivAnimacao);// imageWiew no layout
-        splash.setBackgroundResource(R.drawable.splash_animation);//drawable construido para animaçao
+        splash = (ImageView) findViewById(R.id.ivAnimacao);
+        splash.setBackgroundResource(R.drawable.splash_animation);
 
         ctx = this.getApplicationContext();
 
-        //inicia processamento paralelo a thread
+        cod_login = getIntent().getIntExtra("cod_login",0);
+
         new InsertAsync().execute("");
     }
 
@@ -35,7 +46,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        //inicia animação na splash, na thread da interface gráfica mesmo
         splashAnimation = (AnimationDrawable) splash.getBackground();
         if (hasFocus) {
             splashAnimation.start();
@@ -47,16 +57,14 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int tempoSplash = 5000;//5 segundos
+        int tempoSplash = 5000;
 
-        //cria delay para entrar na proxima activity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Seta intent para abrir nova Activity
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                intent.putExtra("cod_login",cod_login);
                 startActivity(intent);
-                //Fecha Activity atual
                 finish();
             }
         }, tempoSplash);
@@ -64,16 +72,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     protected static void populate() {
-        ServicoDao dao = new ServicoDao(ctx);
-        dao.getSocket();
-
-
+        new EnderecoDao(ctx).populateSocket();
+        new PessoaDao(ctx).populateSocket();
+        new ClienteDao(ctx).populateSocket();
+        new LoginDao(ctx).populateSocket();
+        new FuncionarioDao(ctx).populateSocket();
+        new CarroDao(ctx).populateSocket();
+        new OrdemServicoDao(ctx).populateSocket();
+        new ServicoDao(ctx).populateSocket();
+        new Servico_OSDao(ctx).populateSocket();
+        System.gc();
     }
-
-    /* -------------------------------------------------------
-    SUBCLASSE RESPONSÁVEL POR CRIAR A SEGUNDA THREAD, OBJETIVANDO PROCESSAMENTO
-    PARALELO AO DA THREAD DA INTERFACE GRÁFICA
-     ----------------------------------------------------------*/
 
     class InsertAsync extends AsyncTask<String, String, String> {
         //método executado antes do método da segunda thread doInBackground

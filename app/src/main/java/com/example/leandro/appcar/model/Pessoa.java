@@ -12,14 +12,14 @@ public class Pessoa implements Serializable {
     private String email;
     private String telefoneM;
     private String telefoneF;
-    private Endereco endereco;
+    private int endereco;
     private String rg;
 
     public Pessoa() {
 
     }
 
-    public Pessoa(String nome, String cpf, String sexo, String email, String telefoneM, String telefoneF, Endereco endereco, String rg) {
+    public Pessoa(String nome, String cpf, String sexo, String email, String telefoneM, String telefoneF, int endereco, String rg) {
         this.nome = nome;
         this.cpf = cpf;
         this.sexo = sexo;
@@ -96,11 +96,11 @@ public class Pessoa implements Serializable {
     }
 
 
-    public Endereco getEndereco() {
+    public int getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(Endereco endereco) {
+    public void setEndereco(int endereco) {
         this.endereco = endereco;
     }
 

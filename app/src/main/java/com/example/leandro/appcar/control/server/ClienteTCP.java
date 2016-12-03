@@ -17,7 +17,7 @@ import java.net.SocketException;
 public class ClienteTCP {
 
     private Socket s; //socket res
-    private static String ipServ = "172.16.2.155"; //ip do servidor
+    private static String ipServ = "192.168.0.108"; //ip do servidor
     private static int portaServ = 3322; //porta do servidor
 
     //Método construtor criando o socket, estabelecendo conexão com o servidor

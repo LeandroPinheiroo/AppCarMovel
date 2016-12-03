@@ -2,7 +2,6 @@ package com.example.leandro.appcar.control.rest;
 
 import com.example.leandro.appcar.model.Endereco;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,13 +9,11 @@ import java.util.ArrayList;
 
 public class EnderecoJSON {
 
-    public static Endereco getEnderecoJSON(JSONObject json) {
+    public static Endereco getEnderecoJSON(JSONObject object) {
         //instancia vetor de enderecos
         Endereco endereco = new Endereco();
         try {
             //pega do json os registros da tag endereco
-            JSONArray vetor = (JSONArray) json.get("endereco");
-            JSONObject object = (JSONObject) vetor.get(0);
             endereco.setCod(object.getInt("cod"));
             endereco.setRua(object.getString("rua"));
             endereco.setNumero(object.getString("numero"));
@@ -63,6 +60,7 @@ public class EnderecoJSON {
             registro.put("bairro", endereco.getBairro());
             registro.put("cidade", endereco.getCidade());
             registro.put("cep", endereco.getCep());
+            return registro;
         } catch (JSONException k) {
         }
         return null;

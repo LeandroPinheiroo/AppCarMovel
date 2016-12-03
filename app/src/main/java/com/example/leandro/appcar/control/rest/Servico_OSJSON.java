@@ -1,29 +1,24 @@
 package com.example.leandro.appcar.control.rest;
 
 import com.example.leandro.appcar.model.Servico_OS;
-import com.example.leandro.appcar.control.persistence.FuncionarioDao;
-import com.example.leandro.appcar.control.persistence.OrdemServicoDao;
-import com.example.leandro.appcar.control.persistence.ServicoDao;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 public class Servico_OSJSON {
 
-    public static Servico_OS getServico_OSJSON(JSONObject json) {
+    public static Servico_OS getServico_OSJSON(JSONObject object) {
         //instancia vetor de servico_os
         Servico_OS servico_os = new Servico_OS();
         try {
             //pega do json os registros da tag servico_os
-            JSONArray vetor = (JSONArray) json.get("servico_os");
-            JSONObject object = (JSONObject) vetor.get(0);
             servico_os.setCod(object.getInt("cod"));
-            servico_os.setFuncionario(new FuncionarioDao(null).get(object.getInt("funcionario_codigo")));
-            servico_os.setOrdemservico(new OrdemServicoDao(null).get(object.getInt("ordemservico_cod")));
-            servico_os.setServico(new ServicoDao(null).get(object.getInt("servico_cod")));
+            servico_os.setFuncionario(object.getInt("funcionario_codigo"));
+            servico_os.setOrdemservico(object.getInt("ordemservico_cod"));
+            servico_os.setServico(object.getInt("servico_cod"));
         } catch (Exception x) {
         }
         return servico_os;
@@ -57,9 +52,10 @@ public class Servico_OSJSON {
         JSONObject registro = new JSONObject();
         try {
             registro.put("cod", servico.getCod());
-            registro.put("funcionario_codigo", servico.getFuncionario().getCodigo());
-            registro.put("ordemservico_codigo", servico.getOrdemservico().getCod());
-            registro.put("servico_codigo", servico.getServico().getCod());
+            registro.put("funcionario_codigo", servico.getFuncionario());
+            registro.put("ordemservico_codigo", servico.getOrdemservico());
+            registro.put("servico_codigo", servico.getServico());
+            return registro;
         } catch (JSONException k) {
         }
         return null;
