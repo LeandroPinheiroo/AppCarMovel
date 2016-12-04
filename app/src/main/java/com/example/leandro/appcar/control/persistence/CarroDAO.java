@@ -21,7 +21,6 @@ public class CarroDao {
     private SQLiteConnector connector;
     private Context context;
 
-
     public CarroDao(Context context) {
         this.connector = new SQLiteConnector(context);
         this.context = context;
@@ -29,8 +28,8 @@ public class CarroDao {
 
 
     public long save(Carro carro) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        Integer identifier = carro.getCod();
+        long i;
+        SQLiteDatabase db = connector.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("cod", carro.getCod());
         values.put("marca", carro.getMarca());
@@ -43,43 +42,51 @@ public class CarroDao {
         values.put("obs", carro.getObs());
         values.put("dono_codigo", carro.getDono());
 
-        if (identifier != 0) {
-            return database.update("carro", values, "cod = ?", new String[]{String.valueOf(identifier)});
+        if (carro.getCod() != 0) {
+            i = db.update("carro", values, "cod = ?", new String[]{String.valueOf(carro.getCod())});
         } else {
-            return database.insert("carro", null, values);
+            i = db.insert("carro", null, values);
         }
+
+        db.close();
+        return i;
     }
 
 
-    public int remove(Carro carro) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        return database.delete("carro", "cod = ?", new String[]{String.valueOf(carro.getCod())});
+    public void remove(Carro carro) {
+        SQLiteDatabase db = connector.getWritableDatabase();
+        db.delete("carro", "cod = ?", new String[]{String.valueOf(carro.getCod())});
+        db.close();
     }
 
     public List<Carro> getAll() {
-        SQLiteDatabase database = connector.getReadableDatabase();
-
+        SQLiteDatabase db = connector.getReadableDatabase();
         List<Carro> carros = new ArrayList<>();
+        Cursor cursor = db.query("carro", null, null, null, null, null, null);
 
-        Cursor cursor = database.query("carro", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Carro carro = new Carro();
-                carro.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
-                carro.setMarca((cursor.getString(cursor.getColumnIndex("marca"))));
-                carro.setModelo((cursor.getString(cursor.getColumnIndex("modelo"))));
-                carro.setCor((cursor.getString(cursor.getColumnIndex("cor"))));
-                carro.setAno((cursor.getString(cursor.getColumnIndex("ano"))));
-                carro.setChassi((cursor.getString(cursor.getColumnIndex("chassi"))));
-                carro.setKm((cursor.getString(cursor.getColumnIndex("km"))));
-                carro.setPlaca((cursor.getString(cursor.getColumnIndex("placa"))));
-                carro.setObs((cursor.getString(cursor.getColumnIndex("obs"))));
-                carro.setDono(cursor.getInt(cursor.getColumnIndex("dono_codigo")));
-                carros.add(carro);
-            } while (cursor.moveToNext());
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Carro carro = new Carro();
+                        carro.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
+                        carro.setMarca((cursor.getString(cursor.getColumnIndex("marca"))));
+                        carro.setModelo((cursor.getString(cursor.getColumnIndex("modelo"))));
+                        carro.setCor((cursor.getString(cursor.getColumnIndex("cor"))));
+                        carro.setAno((cursor.getString(cursor.getColumnIndex("ano"))));
+                        carro.setChassi((cursor.getString(cursor.getColumnIndex("chassi"))));
+                        carro.setKm((cursor.getString(cursor.getColumnIndex("km"))));
+                        carro.setPlaca((cursor.getString(cursor.getColumnIndex("placa"))));
+                        carro.setObs((cursor.getString(cursor.getColumnIndex("obs"))));
+                        carro.setDono(cursor.getInt(cursor.getColumnIndex("dono_codigo")));
+                        carros.add(carro);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-        database.close();
-        cursor.close();
+        db.close();
         return carros;
     }
 
@@ -87,32 +94,36 @@ public class CarroDao {
         SQLiteDatabase db = connector.getReadableDatabase();
 
         Cursor cursor = db.query("Carro", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
         Carro carro = new Carro();
-        carro.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
-        carro.setMarca((cursor.getString(cursor.getColumnIndex("marca"))));
-        carro.setModelo((cursor.getString(cursor.getColumnIndex("modelo"))));
-        carro.setCor((cursor.getString(cursor.getColumnIndex("cor"))));
-        carro.setAno((cursor.getString(cursor.getColumnIndex("ano"))));
-        carro.setChassi((cursor.getString(cursor.getColumnIndex("chassi"))));
-        carro.setKm((cursor.getString(cursor.getColumnIndex("km"))));
-        carro.setPlaca((cursor.getString(cursor.getColumnIndex("placa"))));
-        carro.setObs((cursor.getString(cursor.getColumnIndex("obs"))));
-        carro.setDono(cursor.getInt(cursor.getColumnIndex("dono_codigo")));
-        cursor.close();
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    carro.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
+                    carro.setMarca((cursor.getString(cursor.getColumnIndex("marca"))));
+                    carro.setModelo((cursor.getString(cursor.getColumnIndex("modelo"))));
+                    carro.setCor((cursor.getString(cursor.getColumnIndex("cor"))));
+                    carro.setAno((cursor.getString(cursor.getColumnIndex("ano"))));
+                    carro.setChassi((cursor.getString(cursor.getColumnIndex("chassi"))));
+                    carro.setKm((cursor.getString(cursor.getColumnIndex("km"))));
+                    carro.setPlaca((cursor.getString(cursor.getColumnIndex("placa"))));
+                    carro.setObs((cursor.getString(cursor.getColumnIndex("obs"))));
+                    carro.setDono(cursor.getInt(cursor.getColumnIndex("dono_codigo")));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
         db.close();
         return carro;
 
     }
 
     public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        if(this.getAll().size()>0){
-            database.delete("carro", null, null);
-            database.close();
+        SQLiteDatabase db = connector.getWritableDatabase();
+        if (this.getAll().size() > 0) {
+            db.delete("carro", null, null);
         }
+        db.close();
     }
 
     public void populateSocket() {

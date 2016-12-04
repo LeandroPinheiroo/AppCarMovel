@@ -50,13 +50,12 @@ public class MainActivity extends AppCompatActivity {
         funcionarioDao = new FuncionarioDao(this.getApplicationContext());
 
         for(Funcionario fun : funcionarioDao.getAll()){
-            System.out.println("AAA");
-            System.out.println("FUNNNNNNNNNNN:"+fun.getCodigo());
+            System.out.println("Código do Funcionario Logado:"+fun.getCodigo());
         }
 
-       // funcionario = funcionarioDao.getLogin(getIntent().getIntExtra("cod_login", 0));
+       funcionario = funcionarioDao.getLogin(getIntent().getIntExtra("cod_login", 0));
 
-       // Toast.makeText(this.getBaseContext(), "Bem Vindo " + funcionario.getNome() + ".", Toast.LENGTH_SHORT);
+        Toast.makeText(this.getBaseContext(), "Bem Vindo " + funcionario.getNome() + ".", Toast.LENGTH_SHORT);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();

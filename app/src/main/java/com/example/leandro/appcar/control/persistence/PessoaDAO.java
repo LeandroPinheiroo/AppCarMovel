@@ -29,8 +29,8 @@ public class PessoaDao {
 
 
     public long save(Pessoa pessoa) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        long identifier = pessoa.getCodigo();
+        long i;
+        SQLiteDatabase db = connector.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("codigo", pessoa.getCodigo());
         values.put("nome", pessoa.getNome());
@@ -42,74 +42,82 @@ public class PessoaDao {
         values.put("rg", pessoa.getRg());
         values.put("endereco_cod", pessoa.getEndereco());
 
-        if (identifier != 0) {
-            return database.update("pessoa", values, "codigo = ?", new String[]{String.valueOf(identifier)});
+        if (pessoa.getCodigo() != 0) {
+            i = db.update("pessoa", values, "codigo = ?", new String[]{String.valueOf(pessoa.getCodigo())});
         } else {
-            return database.insert("pessoa", null, values);
+            i = db.insert("pessoa", null, values);
         }
+        db.close();
+        return i;
     }
 
 
-    public int remove(Pessoa pessoa) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        return database.delete("pessoa", "codigo = ?", new String[]{String.valueOf(pessoa.getCodigo())});
+    public void remove(Pessoa pessoa) {
+        SQLiteDatabase db = connector.getWritableDatabase();
+         db.delete("pessoa", "codigo = ?", new String[]{String.valueOf(pessoa.getCodigo())});
+        db.close();
     }
 
     public List<Pessoa> getAll() {
-        SQLiteDatabase database = connector.getReadableDatabase();
-
+        SQLiteDatabase db = connector.getReadableDatabase();
         List<Pessoa> pessoas = new ArrayList<>();
-
-        Cursor cursor = database.query("pessoa", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Pessoa pessoa = new Pessoa();
-                pessoa.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
-                pessoa.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-                pessoa.setCpf(cursor.getString(cursor.getColumnIndex("cpf")));
-                pessoa.setSexo(cursor.getString(cursor.getColumnIndex("sexo")));
-                pessoa.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-                pessoa.setTelefoneM(cursor.getString(cursor.getColumnIndex("telefoneM")));
-                pessoa.setTelefoneF(cursor.getString(cursor.getColumnIndex("telefoneF")));
-                pessoa.setRg(cursor.getString(cursor.getColumnIndex("rg")));
-                pessoa.setEndereco(cursor.getInt(cursor.getColumnIndex("endereco_cod")));
-                pessoas.add(pessoa);
-            } while (cursor.moveToNext());
+        Cursor cursor = db.query("pessoa", null, null, null, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Pessoa pessoa = new Pessoa();
+                        pessoa.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
+                        pessoa.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+                        pessoa.setCpf(cursor.getString(cursor.getColumnIndex("cpf")));
+                        pessoa.setSexo(cursor.getString(cursor.getColumnIndex("sexo")));
+                        pessoa.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+                        pessoa.setTelefoneM(cursor.getString(cursor.getColumnIndex("telefoneM")));
+                        pessoa.setTelefoneF(cursor.getString(cursor.getColumnIndex("telefoneF")));
+                        pessoa.setRg(cursor.getString(cursor.getColumnIndex("rg")));
+                        pessoa.setEndereco(cursor.getInt(cursor.getColumnIndex("endereco_cod")));
+                        pessoas.add(pessoa);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-
-        cursor.close();
-        database.close();
+        db.close();
         return pessoas;
     }
 
     public Pessoa get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
         Cursor cursor = db.query("pessoa", null, "codigo=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        Pessoa pessoa = new Pessoa();
         if (cursor != null) {
-            cursor.moveToFirst();
-            Pessoa pessoa = new Pessoa();
-            pessoa.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
-            pessoa.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-            pessoa.setCpf(cursor.getString(cursor.getColumnIndex("cpf")));
-            pessoa.setSexo(cursor.getString(cursor.getColumnIndex("sexo")));
-            pessoa.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-            pessoa.setTelefoneM(cursor.getString(cursor.getColumnIndex("telefoneM")));
-            pessoa.setTelefoneF(cursor.getString(cursor.getColumnIndex("telefoneF")));
-            pessoa.setRg(cursor.getString(cursor.getColumnIndex("rg")));
-            pessoa.setEndereco(cursor.getInt(cursor.getColumnIndex("endereco_cod")));
-            cursor.close();
-            db.close();
-            return pessoa;
+            try {
+                if (cursor.moveToFirst()) {
+                        pessoa.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
+                        pessoa.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+                        pessoa.setCpf(cursor.getString(cursor.getColumnIndex("cpf")));
+                        pessoa.setSexo(cursor.getString(cursor.getColumnIndex("sexo")));
+                        pessoa.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+                        pessoa.setTelefoneM(cursor.getString(cursor.getColumnIndex("telefoneM")));
+                        pessoa.setTelefoneF(cursor.getString(cursor.getColumnIndex("telefoneF")));
+                        pessoa.setRg(cursor.getString(cursor.getColumnIndex("rg")));
+                        pessoa.setEndereco(cursor.getInt(cursor.getColumnIndex("endereco_cod")));
+                }
+            } finally {
+                cursor.close();
+            }
         }
-           return null;
+        db.close();
+        return pessoa;
     }
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
         if (this.getAll().size() > 0) {
             db.delete("pessoa", null, null);
-            db.close();
         }
+        db.close();
     }
 
     public void populateSocket() {

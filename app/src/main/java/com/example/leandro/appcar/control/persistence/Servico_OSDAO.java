@@ -29,73 +29,81 @@ public class Servico_OSDao {
 
 
     public long save(Servico_OS servico_os) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        long identifier = servico_os.getCod();
+        long i;
+        SQLiteDatabase db = connector.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("cod", servico_os.getCod());
         values.put("servico_cod", servico_os.getServico());
         values.put("ordemservico_cod", servico_os.getOrdemservico());
         values.put("funcionario_codigo", servico_os.getFuncionario());
 
-        if (identifier != 0) {
-            return database.update("servico_os", values, "cod = ?", new String[]{String.valueOf(identifier)});
+        if (servico_os.getCod() != 0) {
+            i = db.update("servico_os", values, "cod = ?", new String[]{String.valueOf(servico_os.getCod())});
         } else {
-            return database.insert("servico_os", null, values);
+            i = db.insert("servico_os", null, values);
         }
+        db.close();
+        return i;
     }
 
 
-    public int remove(Servico_OS servico_os) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-
-        return database.delete("servico_os", "cod = ?", new String[]{String.valueOf(servico_os.getCod())});
+    public void remove(Servico_OS servico_os) {
+        SQLiteDatabase db = connector.getWritableDatabase();
+ db.delete("servico_os", "cod = ?", new String[]{String.valueOf(servico_os.getCod())});
+        db.close();
     }
 
 
     public List<Servico_OS> getAll() {
-        SQLiteDatabase database = connector.getReadableDatabase();
-
+        SQLiteDatabase db = connector.getReadableDatabase();
         List<Servico_OS> servicos = new ArrayList<>();
-
-        Cursor cursor = database.query("servico_os", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Servico_OS servico_os = new Servico_OS();
-                servico_os.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
-                servico_os.setFuncionario(cursor.getInt(cursor.getColumnIndex("funcionario_codigo")));
-                servico_os.setOrdemservico(cursor.getInt(cursor.getColumnIndex("ordemservico_cod")));
-                servico_os.setServico(cursor.getInt(cursor.getColumnIndex("servico_cod")));
-
-            } while (cursor.moveToNext());
+        Cursor cursor = db.query("servico_os", null, null, null, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Servico_OS servico_os = new Servico_OS();
+                        servico_os.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
+                        servico_os.setFuncionario(cursor.getInt(cursor.getColumnIndex("funcionario_codigo")));
+                        servico_os.setOrdemservico(cursor.getInt(cursor.getColumnIndex("ordemservico_cod")));
+                        servico_os.setServico(cursor.getInt(cursor.getColumnIndex("servico_cod")));
+                        servicos.add(servico_os);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-
-        cursor.close();
-        database.close();
+        db.close();
         return servicos;
     }
 
     public Servico_OS get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
-
         Cursor cursor = db.query("servico_os", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
         Servico_OS servico_os = new Servico_OS();
-        servico_os.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
-        servico_os.setFuncionario(cursor.getInt(cursor.getColumnIndex("funcionario_codigo")));
-        servico_os.setOrdemservico(cursor.getInt(cursor.getColumnIndex("ordemservico_cod")));
-        servico_os.setServico(cursor.getInt(cursor.getColumnIndex("servico_cod")));
-cursor.close();
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                        servico_os.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
+                        servico_os.setFuncionario(cursor.getInt(cursor.getColumnIndex("funcionario_codigo")));
+                        servico_os.setOrdemservico(cursor.getInt(cursor.getColumnIndex("ordemservico_cod")));
+                        servico_os.setServico(cursor.getInt(cursor.getColumnIndex("servico_cod")));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
         db.close();
         return servico_os;
     }
 
     public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
+        SQLiteDatabase db = connector.getWritableDatabase();
         if (this.getAll().size() > 0) {
-            database.delete("servico_os", null, null);
+            db.delete("servico_os", null, null);
         }
+        db.close();
     }
 
     public void populateSocket() {

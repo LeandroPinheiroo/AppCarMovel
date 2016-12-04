@@ -29,70 +29,79 @@ public class LoginDao {
 
 
     public long save(Login login) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        Integer identifier = login.getCod();
+        SQLiteDatabase db = connector.getWritableDatabase();
+        long i;
         ContentValues values = new ContentValues();
         values.put("cod", login.getCod());
         values.put("senha", login.getSenha());
         values.put("usuario", login.getUsuario());
-        if (identifier != 0) {
-            return database.update("login", values, "cod = ?", new String[]{String.valueOf(identifier)});
+        if (login.getCod() != 0) {
+            i = db.update("login", values, "cod = ?", new String[]{String.valueOf(login.getCod())});
         } else {
-            return database.insert("login", null, values);
+            i = db.insert("login", null, values);
         }
+        db.close();
+        return i;
     }
 
 
-    public int remove(Login login) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        return database.delete("login", "cod = ?", new String[]{String.valueOf(login.getCod())});
+    public void remove(Login login) {
+        SQLiteDatabase db = connector.getWritableDatabase();
+        db.delete("login", "cod = ?", new String[]{String.valueOf(login.getCod())});
+    db.close();
     }
 
 
     public List<Login> getAll() {
-        SQLiteDatabase database = connector.getReadableDatabase();
+        SQLiteDatabase db = connector.getReadableDatabase();
+        List<Login> logins = new ArrayList<>();
+        Cursor cursor = db.query("login", null, null, null, null, null, null);
 
-        List<Login> servidors = new ArrayList<>();
-
-        Cursor cursor = database.query("login", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Login login = new Login();
-                login.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
-                login.setSenha(cursor.getString(cursor.getColumnIndex("senha")));
-                login.setUsuario(cursor.getString(cursor.getColumnIndex("usuario")));
-
-                servidors.add(login);
-            } while (cursor.moveToNext());
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Login login = new Login();
+                        login.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
+                        login.setSenha(cursor.getString(cursor.getColumnIndex("senha")));
+                        login.setUsuario(cursor.getString(cursor.getColumnIndex("usuario")));
+                        logins.add(login);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-
-        cursor.close();
-        database.close();
-        return servidors;
+        db.close();
+        return logins;
     }
 
     public Login get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
-
         Cursor cursor = db.query("login", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
         Login login = new Login();
-        login.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
-        login.setSenha(cursor.getString(cursor.getColumnIndex("senha")));
-        login.setUsuario(cursor.getString(cursor.getColumnIndex("usuario")));
-        cursor.close();
+
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                        login.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
+                        login.setSenha(cursor.getString(cursor.getColumnIndex("senha")));
+                        login.setUsuario(cursor.getString(cursor.getColumnIndex("usuario")));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
         db.close();
         return login;
     }
 
     public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
+        SQLiteDatabase db = connector.getWritableDatabase();
         if (this.getAll().size() > 0) {
-            database.delete("login", null, null);
-            database.close();
+            db.delete("login", null, null);
         }
+        db.close();
     }
 
     public void populateSocket() {

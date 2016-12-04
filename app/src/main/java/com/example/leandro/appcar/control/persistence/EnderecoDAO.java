@@ -29,8 +29,8 @@ public class EnderecoDao {
 
 
     public long save(Endereco endereco) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        long identifier = endereco.getCod();
+        long i;
+        SQLiteDatabase db = connector.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("cod", endereco.getCod());
         values.put("numero", endereco.getNumero());
@@ -41,69 +41,77 @@ public class EnderecoDao {
         values.put("cep", endereco.getCep());
 
 
-        if (identifier != 0) {
-            return database.update("endereco", values, "cod = ?", new String[]{String.valueOf(identifier)});
+        if (endereco.getCod() != 0) {
+            i = db.update("endereco", values, "cod = ?", new String[]{String.valueOf(endereco.getCod())});
         } else {
-            return database.insert("endereco", null, values);
+            i = db.insert("endereco", null, values);
         }
+        db.close();
+        return i;
     }
 
 
-    public int remove(Endereco endereco) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-
-        return database.delete("endereco", "cod = ?", new String[]{String.valueOf(endereco.getCod())});
+    public void remove(Endereco endereco) {
+        SQLiteDatabase db = connector.getWritableDatabase();
+        db.delete("endereco", "cod = ?", new String[]{String.valueOf(endereco.getCod())});
+        db.close();
     }
 
 
     public List<Endereco> getAll() {
-        SQLiteDatabase database = connector.getReadableDatabase();
-
+        SQLiteDatabase db = connector.getReadableDatabase();
         List<Endereco> enderecos = new ArrayList<>();
-
-        Cursor cursor = database.query("endereco", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Endereco endereco = new Endereco();
-                endereco.setNumero((cursor.getString(cursor.getColumnIndex("numero"))));
-                endereco.setRua((cursor.getString(cursor.getColumnIndex("rua"))));
-                endereco.setBairro((cursor.getString(cursor.getColumnIndex("bairro"))));
-                endereco.setCidade((cursor.getString(cursor.getColumnIndex("cidade"))));
-                endereco.setComplemento((cursor.getString(cursor.getColumnIndex("comeplento"))));
-                endereco.setCep((cursor.getString(cursor.getColumnIndex("cep"))));
-                enderecos.add(endereco);
-            } while (cursor.moveToNext());
+        Cursor cursor = db.query("endereco", null, null, null, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Endereco endereco = new Endereco();
+                        endereco.setNumero((cursor.getString(cursor.getColumnIndex("numero"))));
+                        endereco.setRua((cursor.getString(cursor.getColumnIndex("rua"))));
+                        endereco.setBairro((cursor.getString(cursor.getColumnIndex("bairro"))));
+                        endereco.setCidade((cursor.getString(cursor.getColumnIndex("cidade"))));
+                        endereco.setComplemento((cursor.getString(cursor.getColumnIndex("comeplento"))));
+                        endereco.setCep((cursor.getString(cursor.getColumnIndex("cep"))));
+                        enderecos.add(endereco);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-        database.close();
-        cursor.close();
+        db.close();
         return enderecos;
     }
 
     public Endereco get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
-
-        Cursor cursor = db.query("Endereco", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
         Endereco endereco = new Endereco();
-        endereco.setNumero((cursor.getString(cursor.getColumnIndex("numero"))));
-        endereco.setRua((cursor.getString(cursor.getColumnIndex("rua"))));
-        endereco.setBairro((cursor.getString(cursor.getColumnIndex("bairro"))));
-        endereco.setCidade((cursor.getString(cursor.getColumnIndex("cidade"))));
-        endereco.setComplemento((cursor.getString(cursor.getColumnIndex("comeplento"))));
-        endereco.setCep((cursor.getString(cursor.getColumnIndex("cep"))));
-        cursor.close();
+        Cursor cursor = db.query("endereco", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                        endereco.setNumero((cursor.getString(cursor.getColumnIndex("numero"))));
+                        endereco.setRua((cursor.getString(cursor.getColumnIndex("rua"))));
+                        endereco.setBairro((cursor.getString(cursor.getColumnIndex("bairro"))));
+                        endereco.setCidade((cursor.getString(cursor.getColumnIndex("cidade"))));
+                        endereco.setComplemento((cursor.getString(cursor.getColumnIndex("comeplento"))));
+                        endereco.setCep((cursor.getString(cursor.getColumnIndex("cep"))));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
         db.close();
         return endereco;
     }
 
     public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
+        SQLiteDatabase db = connector.getWritableDatabase();
         if (this.getAll().size() > 0) {
-            database.delete("endereco", null, null);
-            database.close();
+            db.delete("endereco", null, null);
         }
+        db.close();
     }
 
     public void populateSocket() {

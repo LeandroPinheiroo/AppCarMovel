@@ -29,125 +29,128 @@ public class FuncionarioDao {
 
 
     public long save(Funcionario funcionario) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        long identifier = funcionario.getCodigo();
+        SQLiteDatabase db = connector.getWritableDatabase();
+        long i;
         ContentValues values = new ContentValues();
-
-        System.out.println("ENTROU FUNCIONARIO DE "+funcionario.getCodigo());
-
         values.put("codigo", funcionario.getCodigo());
         values.put("login_cod", funcionario.getLogin());
 
-        if (identifier != 0) {
-            return database.update("funcionario", values, "codigo = ?", new String[]{String.valueOf(identifier)});
+        if (funcionario.getCodigo() != 0) {
+            i = db.update("funcionario", values, "codigo = ?", new String[]{String.valueOf(funcionario.getCodigo())});
         } else {
-            return database.insert("funcionario", null, values);
+            i = db.insert("funcionario", null, values);
         }
+        db.close();
+        return i;
     }
 
 
-    public int remove(Funcionario funcionario) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-
-        return database.delete("funcionario", "codigo = ?", new String[]{String.valueOf(funcionario.getCodigo())});
+    public void remove(Funcionario funcionario) {
+        SQLiteDatabase db = connector.getWritableDatabase();
+        db.delete("funcionario", "codigo = ?", new String[]{String.valueOf(funcionario.getCodigo())});
+        db.close();
     }
 
 
     public List<Funcionario> getAll() {
-        SQLiteDatabase database = connector.getReadableDatabase();
-
+        SQLiteDatabase db = connector.getReadableDatabase();
         List<Funcionario> funcionarios = new ArrayList<>();
-
-        Cursor cursor = database.query("funcionario", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Funcionario funcionario = new Funcionario();
-                Pessoa pessoa = new PessoaDao(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
-                funcionario.setLogin(cursor.getInt(cursor.getColumnIndex("login_cod")));
-                funcionario.setCodigo(pessoa.getCodigo());
-                funcionario.setNome(pessoa.getNome());
-                funcionario.setCpf(pessoa.getCpf());
-                funcionario.setSexo(pessoa.getSexo());
-                funcionario.setEndereco(pessoa.getEndereco());
-                funcionario.setEmail(pessoa.getEmail());
-                funcionario.setTelefoneM(pessoa.getTelefoneM());
-                funcionario.setTelefoneF(pessoa.getTelefoneF());
-                funcionario.setRg(pessoa.getRg());
-                funcionario.setEndereco(pessoa.getEndereco());
-
-                funcionarios.add(funcionario);
-            } while (cursor.moveToNext());
+        Cursor cursor = db.query("funcionario", null, null, null, null, null, null);
+        db.close();
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Funcionario funcionario = new Funcionario();
+                        Pessoa pessoa = new PessoaDao(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
+                        funcionario.setLogin(cursor.getInt(cursor.getColumnIndex("login_cod")));
+                        funcionario.setCodigo(pessoa.getCodigo());
+                        funcionario.setNome(pessoa.getNome());
+                        funcionario.setCpf(pessoa.getCpf());
+                        funcionario.setSexo(pessoa.getSexo());
+                        funcionario.setEndereco(pessoa.getEndereco());
+                        funcionario.setEmail(pessoa.getEmail());
+                        funcionario.setTelefoneM(pessoa.getTelefoneM());
+                        funcionario.setTelefoneF(pessoa.getTelefoneF());
+                        funcionario.setRg(pessoa.getRg());
+                        funcionario.setEndereco(pessoa.getEndereco());
+                        funcionarios.add(funcionario);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-
-        cursor.close();
         return funcionarios;
     }
 
     public Funcionario get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
-
         Cursor cursor = db.query("funcionario", null, "codigo=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        db.close();
+        Funcionario funcionario = new Funcionario();
         if (cursor != null) {
-            cursor.moveToFirst();
-            Funcionario funcionario = new Funcionario();
-            funcionario.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
-            funcionario.setLogin(cursor.getInt(cursor.getColumnIndex("login_cod")));
-            cursor.close();
-            db.close();
-
-            Pessoa pessoa = new PessoaDao(this.context).get(funcionario.getCodigo());
-            funcionario.setCodigo(pessoa.getCodigo());
-            funcionario.setNome(pessoa.getNome());
-            funcionario.setCpf(pessoa.getCpf());
-            funcionario.setSexo(pessoa.getSexo());
-            funcionario.setEndereco(pessoa.getEndereco());
-            funcionario.setEmail(pessoa.getEmail());
-            funcionario.setTelefoneM(pessoa.getTelefoneM());
-            funcionario.setTelefoneF(pessoa.getTelefoneF());
-            funcionario.setRg(pessoa.getRg());
-            funcionario.setEndereco(pessoa.getEndereco());
-            return funcionario;
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        funcionario.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
+                        funcionario.setLogin(cursor.getInt(cursor.getColumnIndex("login_cod")));
+                        Pessoa pessoa = new PessoaDao(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
+                        funcionario.setNome(pessoa.getNome());
+                        funcionario.setCpf(pessoa.getCpf());
+                        funcionario.setSexo(pessoa.getSexo());
+                        funcionario.setEndereco(pessoa.getEndereco());
+                        funcionario.setEmail(pessoa.getEmail());
+                        funcionario.setTelefoneM(pessoa.getTelefoneM());
+                        funcionario.setTelefoneF(pessoa.getTelefoneF());
+                        funcionario.setRg(pessoa.getRg());
+                        funcionario.setEndereco(pessoa.getEndereco());
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-        return null;
+        return funcionario;
     }
 
     public Funcionario getLogin(int login) {
         SQLiteDatabase db = connector.getReadableDatabase();
-        String[] campos =  {"codigo","login_cod"};
-        Cursor cursor = db.query("funcionario", campos, "login_cod="+login, null, null, null, null, null);
-
+        Cursor cursor = db.query("funcionario", null, "login_cod=?", new String[]{String.valueOf(login)}, null, null, null, null);
+        db.close();
+        Funcionario funcionario = new Funcionario();
         if (cursor != null) {
-            cursor.moveToFirst();
-            Funcionario funcionario = new Funcionario();
-
-            funcionario.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
-            funcionario.setLogin(cursor.getInt(cursor.getColumnIndex("login_cod")));
-            cursor.close();
-            db.close();
-
-            Pessoa pessoa = new PessoaDao(this.context).get(funcionario.getCodigo());
-            funcionario.setCodigo(pessoa.getCodigo());
-            funcionario.setNome(pessoa.getNome());
-            funcionario.setCpf(pessoa.getCpf());
-            funcionario.setSexo(pessoa.getSexo());
-            funcionario.setEndereco(pessoa.getEndereco());
-            funcionario.setEmail(pessoa.getEmail());
-            funcionario.setTelefoneM(pessoa.getTelefoneM());
-            funcionario.setTelefoneF(pessoa.getTelefoneF());
-            funcionario.setRg(pessoa.getRg());
-            funcionario.setEndereco(pessoa.getEndereco());
-            return funcionario;
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        funcionario.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
+                        funcionario.setLogin(cursor.getInt(cursor.getColumnIndex("login_cod")));
+                        Pessoa pessoa = new PessoaDao(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
+                        funcionario.setNome(pessoa.getNome());
+                        funcionario.setCpf(pessoa.getCpf());
+                        funcionario.setSexo(pessoa.getSexo());
+                        funcionario.setEndereco(pessoa.getEndereco());
+                        funcionario.setEmail(pessoa.getEmail());
+                        funcionario.setTelefoneM(pessoa.getTelefoneM());
+                        funcionario.setTelefoneF(pessoa.getTelefoneF());
+                        funcionario.setRg(pessoa.getRg());
+                        funcionario.setEndereco(pessoa.getEndereco());
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-        return null;
+        return funcionario;
     }
 
 
     public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
+        SQLiteDatabase db = connector.getWritableDatabase();
         if (this.getAll().size() > 0) {
-            database.delete("funcionario", null, null);
-            database.close();
+            db.delete("funcionario", null, null);
         }
+        db.close();
     }
 
     public void populateSocket() {

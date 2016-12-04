@@ -30,68 +30,77 @@ public class ServicoDao {
 
 
     public long save(Servico servico) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        long identifier = servico.getCod();
+        long i;
+        SQLiteDatabase db = connector.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("cod", servico.getCod());
         values.put("descricao", servico.getDescricao());
         values.put("valor", servico.getValor());
-        if (identifier != 0) {
-            return database.update("servico", values, "cod = ?", new String[]{String.valueOf(identifier)});
+
+        if (servico.getCod() != 0) {
+            i = db.update("servico", values, "cod = ?", new String[]{String.valueOf(servico.getCod())});
         } else {
-            return database.insert("servico", null, values);
+            i = db.insert("servico", null, values);
         }
+        db.close();
+        return i;
     }
 
 
-    public int remove(Servico servico) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-
-        return database.delete("servico", "cod = ?", new String[]{String.valueOf(servico.getCod())});
+    public void remove(Servico servico) {
+        SQLiteDatabase db = connector.getWritableDatabase();
+        db.delete("servico", "cod = ?", new String[]{String.valueOf(servico.getCod())});
+        db.close();
     }
 
     public List<Servico> getAll() {
-        SQLiteDatabase database = connector.getReadableDatabase();
-
+        SQLiteDatabase db = connector.getReadableDatabase();
         List<Servico> servicos = new ArrayList<>();
-
-        Cursor cursor = database.query("servico", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Servico servico = new Servico();
-                servico.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
-                servico.setValor((cursor.getDouble(cursor.getColumnIndex("valor"))));
-                servico.setDescricao((cursor.getString(cursor.getColumnIndex("descricao"))));
-
-            } while (cursor.moveToNext());
+        Cursor cursor = db.query("servico", null, null, null, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        Servico servico = new Servico();
+                        servico.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
+                        servico.setValor((cursor.getDouble(cursor.getColumnIndex("valor"))));
+                        servico.setDescricao((cursor.getString(cursor.getColumnIndex("descricao"))));
+                        servicos.add(servico);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-
-        cursor.close();
-        database.close();
+        db.close();
         return servicos;
     }
 
     public Servico get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
-
-        Cursor cursor = db.query("servico", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
         Servico servico = new Servico();
-        servico.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
-        servico.setValor((cursor.getDouble(cursor.getColumnIndex("valor"))));
-        servico.setDescricao((cursor.getString(cursor.getColumnIndex("descricao"))));
-        cursor.close();
+        Cursor cursor = db.query("servico", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                        servico.setCod((cursor.getInt(cursor.getColumnIndex("cod"))));
+                        servico.setValor((cursor.getDouble(cursor.getColumnIndex("valor"))));
+                        servico.setDescricao((cursor.getString(cursor.getColumnIndex("descricao"))));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
         db.close();
         return servico;
     }
 
     public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
+        SQLiteDatabase db = connector.getWritableDatabase();
         if (this.getAll().size() > 0) {
-            database.delete("servico", null, null);
+            db.delete("servico", null, null);
         }
+        db.close();
     }
 
     public void populateSocket() {

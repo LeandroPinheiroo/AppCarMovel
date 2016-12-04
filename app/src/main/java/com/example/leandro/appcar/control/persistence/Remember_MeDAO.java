@@ -24,33 +24,39 @@ public class Remember_MeDao {
     }
 
     public long save(Remember_Me remember_me) {
-        SQLiteDatabase database = connector.getWritableDatabase();
+        long i;
+        SQLiteDatabase db = connector.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("cod_login", remember_me.getCod_login());
-        return database.insert("remember_me", null, values);
+        i = db.insert("remember_me", null, values);
+        db.close();
+        return i;
     }
 
 
-    public int remove(Remember_Me remember_me) {
-        SQLiteDatabase database = connector.getWritableDatabase();
-        return database.delete("remember_me", "cod_login = ?", new String[]{String.valueOf(remember_me.getCod_login())});
+    public void remove(Remember_Me remember_me) {
+        SQLiteDatabase db = connector.getWritableDatabase();
+        db.delete("remember_me", "cod_login = ?", new String[]{String.valueOf(remember_me.getCod_login())});
+        db.close();
     }
 
 
     public List<Remember_Me> getAll() {
-        SQLiteDatabase database = connector.getReadableDatabase();
-
+        SQLiteDatabase db = connector.getReadableDatabase();
         List<Remember_Me> remember_me = new ArrayList<>();
-
-        Cursor cursor = database.query("remember_me", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-
-                remember_me.add(new Remember_Me(cursor.getInt(cursor.getColumnIndex("cod_login"))));
-            } while (cursor.moveToNext());
+        Cursor cursor = db.query("remember_me", null, null, null, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        remember_me.add(new Remember_Me(cursor.getInt(cursor.getColumnIndex("cod_login"))));
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
         }
-database.close();
-        cursor.close();
+        db.close();
         return remember_me;
     }
 
@@ -58,19 +64,24 @@ database.close();
         SQLiteDatabase db = connector.getReadableDatabase();
 
         Cursor cursor = db.query("remember_me", null, "cod_login=?", new String[]{String.valueOf(cod_login)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
         Remember_Me remember_me = new Remember_Me();
-        remember_me.setCod_login(cursor.getInt(cursor.getColumnIndex("cod_login")));
-        cursor.close();
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                        remember_me.setCod_login(cursor.getInt(cursor.getColumnIndex("cod_login")));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
         db.close();
         return remember_me;
     }
     public void truncate() {
-        SQLiteDatabase database = connector.getWritableDatabase();
+        SQLiteDatabase db = connector.getWritableDatabase();
         if (this.getAll().size() > 0) {
-            database.delete("remember_me", null, null);
+            db.delete("remember_me", null, null);
         }
+        db.close();
     }
 }

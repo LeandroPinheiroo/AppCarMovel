@@ -14,7 +14,6 @@ public class SQLiteConnector extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         dump(sqLiteDatabase, DB_VERSION);
@@ -30,7 +29,6 @@ public class SQLiteConnector extends SQLiteOpenHelper {
     }
 
     private void dump(SQLiteDatabase database, int version) {
-        Log.d("DB", "Entrou na criação");
         database.execSQL(
                 "create table if not exists login(" +
                         " cod integer primary key," +
@@ -109,6 +107,7 @@ public class SQLiteConnector extends SQLiteOpenHelper {
                 "create table if not exists remember_me(" +
                         " cod_login integer )"
         );
+        database.close();
         Log.d("DB", "Criado");
     }
 }
