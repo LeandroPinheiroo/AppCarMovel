@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.leandro.appcar.control.SQLiteConnector;
+import com.example.leandro.appcar.control.Util;
 import com.example.leandro.appcar.control.rest.OrdemServicoJSON;
-import com.example.leandro.appcar.control.server.ClienteTCP;
+import com.example.leandro.appcar.control.server.ConnectorSocket;
 import com.example.leandro.appcar.model.OrdemServico;
 
 import org.json.JSONArray;
@@ -118,7 +119,7 @@ public class OrdemServicoDao {
     public void populateSocket() {
         this.truncate();
         try {
-            JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_OrdemServico_All"))).getJSONObject("return").getJSONArray("os");
+            JSONArray array = new JSONObject(new ConnectorSocket().execute(Util.geraJSON("get_OrdemServico_All")).get()).getJSONObject("return").getJSONArray("os");
             for (int i = 0; i < array.length(); i++) {
                 System.out.println(array.getJSONObject(i));
                 this.save(OrdemServicoJSON.getOrdemServicoJSON(array.getJSONObject(i)));

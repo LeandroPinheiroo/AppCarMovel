@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.leandro.appcar.control.SQLiteConnector;
+import com.example.leandro.appcar.control.Util;
 import com.example.leandro.appcar.control.rest.ClienteJSON;
-import com.example.leandro.appcar.control.server.ClienteTCP;
+import com.example.leandro.appcar.control.server.ConnectorSocket;
 import com.example.leandro.appcar.model.Cliente;
 import com.example.leandro.appcar.model.Pessoa;
 
@@ -56,8 +57,6 @@ public class ClienteDao {
         SQLiteDatabase db = connector.getReadableDatabase();
         List<Cliente> clientes = new ArrayList<>();
         Cursor cursor = db.query("cliente", null, null, null, null, null, null);
-        db.close();
-
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {
@@ -89,8 +88,6 @@ public class ClienteDao {
         SQLiteDatabase db = connector.getReadableDatabase();
 
         Cursor cursor = db.query("cliente", null, "codigo=?", new String[]{String.valueOf(id)}, null, null, null, null);
-        db.close();
-
         Cliente cliente = new Cliente();
         if (cursor != null) {
             try {
@@ -111,6 +108,7 @@ public class ClienteDao {
                 cursor.close();
             }
         }
+        db.close();
         return cliente;
     }
 
@@ -125,7 +123,7 @@ public class ClienteDao {
     public void populateSocket() {
         this.truncate();
         try {
-            JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Cliente_All"))).getJSONObject("return").getJSONArray("cliente");
+            JSONArray array = new JSONObject(new ConnectorSocket().execute(Util.geraJSON("get_Cliente_All")).get()).getJSONObject("return").getJSONArray("cliente");
             for (int i = 0; i < array.length(); i++) {
                 System.out.println(array.getJSONObject(i));
                 this.save(ClienteJSON.getClienteJSON(array.getJSONObject(i)));

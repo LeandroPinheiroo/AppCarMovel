@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.leandro.appcar.control.Util;
 import com.example.leandro.appcar.control.persistence.Remember_MeDao;
-import com.example.leandro.appcar.control.server.ClienteTCP;
+import com.example.leandro.appcar.control.rest.LoginJSON;
+import com.example.leandro.appcar.control.server.ConnectorSocket;
 import com.example.leandro.appcar.model.Login;
 import com.example.leandro.appcar.model.Remember_Me;
 
@@ -33,11 +35,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        remember_meDAO = new Remember_MeDao(this.getApplicationContext());
 
         if (remember_meDAO.getAll().size() > 0) {
             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-            intent.putExtra("cod_login",remember_meDAO.getAll().get(0).getCod_login());
+            intent.putExtra("cod_login", remember_meDAO.getAll().get(0).getCod_login());
             startActivity(intent);
             finish();
         }
@@ -67,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mLoginFormView = findViewById(R.id.login_form);
-
     }
 
 
@@ -112,10 +112,19 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private static String login(JSONObject json) {
+        try {
+            return new ConnectorSocket().execute(Util.geraJSON("login", json)).get();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return null;
+    }
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
+
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -129,17 +138,19 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
+            Login login = new Login();
+            login.setSenha(mPassword);
+            login.setUsuario(mEmail);
             try {
-                Login login = new Login();
-                login.setSenha(mPassword);
-                login.setUsuario(mEmail);
-                resposta = new JSONObject(new ClienteTCP().login(login));
+                JSONObject json = new JSONObject();
+                json.put("login", LoginJSON.preencheJSON(login));
+                String a = LoginActivity.login(json);
+                resposta = new JSONObject(a);
+                return true;
             } catch (Exception e) {
-                return false;
+                System.out.println(e.toString());
             }
-
-            return true;
+            return false;
         }
 
         @Override
@@ -154,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
                             remember_meDao.save(new Remember_Me(resposta.getInt("cod_login")));
 
                             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-                            intent.putExtra("cod_login",resposta.getInt("cod_login"));
+                            intent.putExtra("cod_login", resposta.getInt("cod_login"));
                             startActivity(intent);
                             finish();
                         }
@@ -169,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                         break;
                 }
             } catch (Exception e) {
-
+                System.out.println(e.toString());
             }
         }
 
@@ -178,6 +189,7 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
         }
     }
+
 
 }
 

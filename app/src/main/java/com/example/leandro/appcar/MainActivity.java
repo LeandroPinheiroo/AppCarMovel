@@ -6,7 +6,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +15,6 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.example.leandro.appcar.control.persistence.FuncionarioDao;
-import com.example.leandro.appcar.control.persistence.PessoaDao;
 import com.example.leandro.appcar.model.Funcionario;
 import com.example.leandro.appcar.view.adapter.CustomExpandableListAdapter;
 import com.example.leandro.appcar.view.datasource.ExpandableListDataSource;
@@ -46,17 +44,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        funcionarioDao = new FuncionarioDao(this.getApplicationContext());
-
-        for(Funcionario fun : funcionarioDao.getAll()){
-            System.out.println("Código do Funcionario Logado:"+fun.getCodigo());
+        this.initUI();
+        if (savedInstanceState == null) {
+            mNavigationManager.showFragmentMain();
         }
+        this.onInit();
+    }
 
-       funcionario = funcionarioDao.getLogin(getIntent().getIntExtra("cod_login", 0));
-
-        Toast.makeText(this.getBaseContext(), "Bem Vindo " + funcionario.getNome() + ".", Toast.LENGTH_SHORT);
-
+    public void initUI() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
@@ -77,12 +72,15 @@ public class MainActivity extends AppCompatActivity {
         addDrawerItems();
         setupDrawer();
 
-        if (savedInstanceState == null) {
-            mNavigationManager.showFragmentMain();
-        }
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+
+    public void onInit() {
+        funcionarioDao = new FuncionarioDao(this.getApplicationContext());
+        funcionario = funcionarioDao.getLogin(getIntent().getIntExtra("cod_login", 0));
+        Toast.makeText(this.getApplicationContext(), "Bem Vindo " + ".", Toast.LENGTH_SHORT).show();
     }
 
     public void onClickHeader() {

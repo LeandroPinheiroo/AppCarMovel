@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.leandro.appcar.control.SQLiteConnector;
+import com.example.leandro.appcar.control.Util;
 import com.example.leandro.appcar.control.rest.LoginJSON;
-import com.example.leandro.appcar.control.server.ClienteTCP;
+import com.example.leandro.appcar.control.server.ConnectorSocket;
 import com.example.leandro.appcar.model.Login;
 
 import org.json.JSONArray;
@@ -107,7 +108,7 @@ public class LoginDao {
     public void populateSocket() {
         this.truncate();
         try {
-            JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Login_All"))).getJSONObject("return").getJSONArray("login");
+            JSONArray array = new JSONObject(new ConnectorSocket().execute(Util.geraJSON("get_Login_All")).get()).getJSONObject("return").getJSONArray("login");
             for (int i = 0; i < array.length(); i++) {
                 System.out.println(array.getJSONObject(i));
                 this.save(LoginJSON.getLoginJSON(array.getJSONObject(i)));

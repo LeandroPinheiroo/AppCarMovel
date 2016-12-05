@@ -53,12 +53,12 @@ public class SQLiteConnector extends SQLiteOpenHelper {
                         " servico_cod integer" + ");");
         database.execSQL(
                 "create table if not exists funcionario(" +
-                        " codigo integer," +
+                        " codigo integer primary key," +
                         " login_cod integer" + ");");
         database.execSQL(
                 "create table if not exists pessoa(" +
-                        " tipo text," +
                         " codigo integer primary key," +
+                        " tipo text," +
                         " cpf text," +
                         " email text," +
                         " nome text," +
@@ -69,7 +69,7 @@ public class SQLiteConnector extends SQLiteOpenHelper {
                         " endereco_cod integer" + ");");
         database.execSQL(
                 "create table if not exists cliente(" +
-                        " codigo integer" + ");");
+                        " codigo integer primary key" + ");");
         database.execSQL(
                 "create table if not exists carro(" +
                         " cod integer primary key," +
@@ -98,16 +98,13 @@ public class SQLiteConnector extends SQLiteOpenHelper {
                         " descricao integer" + ");");
         database.execSQL(
                 "create table if not exists log(" +
-                        " cod integer," +
+                        " cod integer primary key," +
                         " descricao text," +
                         " data text," +
-                        " funcionario_cod integer" + ");"
-        );
+                        " funcionario_cod integer" + ");");
         database.execSQL(
                 "create table if not exists remember_me(" +
-                        " cod_login integer )"
-        );
-        database.close();
+                        "cod_login integer primary key );");
         Log.d("DB", "Criado");
     }
 }

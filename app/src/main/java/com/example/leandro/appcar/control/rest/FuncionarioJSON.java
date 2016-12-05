@@ -16,7 +16,7 @@ public class FuncionarioJSON {
         try {
             //pega do json os registros da tag funcionario
             funcionario.setCodigo(object.getInt("codigo"));
-            funcionario.setLogin(object.getInt("login"));
+            funcionario.setLogin(object.getInt("login_cod"));
         } catch (Exception x) {
         }
         return funcionario;
@@ -50,7 +50,7 @@ public class FuncionarioJSON {
         JSONObject registro = new JSONObject();
         try {
             registro.put("codigo", funcionario.getCodigo());
-            registro.put("login", funcionario.getLogin());
+            registro.put("login_cod", funcionario.getLogin());
             return registro;
         } catch (JSONException k) {
         }

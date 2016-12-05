@@ -59,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onResume();
         int tempoSplash = 5000;
 
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -71,7 +72,7 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    protected static void populate() {
+    public static void populate() {
         new EnderecoDao(ctx).populateSocket();
         new PessoaDao(ctx).populateSocket();
         new ClienteDao(ctx).populateSocket();
@@ -81,7 +82,8 @@ public class SplashActivity extends AppCompatActivity {
         new OrdemServicoDao(ctx).populateSocket();
         new ServicoDao(ctx).populateSocket();
         new Servico_OSDao(ctx).populateSocket();
-        System.gc();
+        System.out.println("ACABOU");
+        System.out.println(new EnderecoDao(ctx).get(21).getCep());
     }
 
     class InsertAsync extends AsyncTask<String, String, String> {

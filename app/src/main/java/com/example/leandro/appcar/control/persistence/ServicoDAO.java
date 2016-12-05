@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.leandro.appcar.control.SQLiteConnector;
+import com.example.leandro.appcar.control.Util;
 import com.example.leandro.appcar.control.rest.ServicoJSON;
-import com.example.leandro.appcar.control.server.ClienteTCP;
+import com.example.leandro.appcar.control.server.ConnectorSocket;
 import com.example.leandro.appcar.model.Servico;
 
 import org.json.JSONArray;
@@ -106,7 +107,7 @@ public class ServicoDao {
     public void populateSocket() {
         this.truncate();
         try {
-            JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Servico_All"))).getJSONObject("return").getJSONArray("servico");
+            JSONArray array = new JSONObject(new ConnectorSocket().execute(Util.geraJSON("get_Servico_All")).get()).getJSONObject("return").getJSONArray("servico");
             for (int i = 0; i < array.length(); i++) {
                 System.out.println(array.getJSONObject(i));
                 this.save(ServicoJSON.getServicoJSON(array.getJSONObject(i)));

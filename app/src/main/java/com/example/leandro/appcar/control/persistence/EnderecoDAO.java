@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.leandro.appcar.control.SQLiteConnector;
+import com.example.leandro.appcar.control.Util;
 import com.example.leandro.appcar.control.rest.EnderecoJSON;
-import com.example.leandro.appcar.control.server.ClienteTCP;
+import com.example.leandro.appcar.control.server.ConnectorSocket;
 import com.example.leandro.appcar.model.Endereco;
 
 import org.json.JSONArray;
@@ -45,6 +46,7 @@ public class EnderecoDao {
             i = db.update("endereco", values, "cod = ?", new String[]{String.valueOf(endereco.getCod())});
         } else {
             i = db.insert("endereco", null, values);
+            System.out.println("Inset Endf "+i);
         }
         db.close();
         return i;
@@ -117,7 +119,7 @@ public class EnderecoDao {
     public void populateSocket() {
         this.truncate();
         try {
-            JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Endereco_All"))).getJSONObject("return").getJSONArray("endereco");
+            JSONArray array = new JSONObject(new ConnectorSocket().execute(Util.geraJSON("get_Endereco_All")).get()).getJSONObject("return").getJSONArray("endereco");
             for (int i = 0; i < array.length(); i++) {
                 System.out.println(array.getJSONObject(i));
                 this.save(EnderecoJSON.getEnderecoJSON(array.getJSONObject(i)));

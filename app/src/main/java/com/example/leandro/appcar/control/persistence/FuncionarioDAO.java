@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.leandro.appcar.control.SQLiteConnector;
+import com.example.leandro.appcar.control.Util;
 import com.example.leandro.appcar.control.rest.FuncionarioJSON;
-import com.example.leandro.appcar.control.server.ClienteTCP;
+import com.example.leandro.appcar.control.server.ConnectorSocket;
 import com.example.leandro.appcar.model.Funcionario;
 import com.example.leandro.appcar.model.Pessoa;
 
@@ -34,7 +35,6 @@ public class FuncionarioDao {
         ContentValues values = new ContentValues();
         values.put("codigo", funcionario.getCodigo());
         values.put("login_cod", funcionario.getLogin());
-
         if (funcionario.getCodigo() != 0) {
             i = db.update("funcionario", values, "codigo = ?", new String[]{String.valueOf(funcionario.getCodigo())});
         } else {
@@ -56,7 +56,6 @@ public class FuncionarioDao {
         SQLiteDatabase db = connector.getReadableDatabase();
         List<Funcionario> funcionarios = new ArrayList<>();
         Cursor cursor = db.query("funcionario", null, null, null, null, null, null);
-        db.close();
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {
@@ -81,13 +80,13 @@ public class FuncionarioDao {
                 cursor.close();
             }
         }
+        db.close();
         return funcionarios;
     }
 
     public Funcionario get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
         Cursor cursor = db.query("funcionario", null, "codigo=?", new String[]{String.valueOf(id)}, null, null, null, null);
-        db.close();
         Funcionario funcionario = new Funcionario();
         if (cursor != null) {
             try {
@@ -111,13 +110,13 @@ public class FuncionarioDao {
                 cursor.close();
             }
         }
+        db.close();
         return funcionario;
     }
 
     public Funcionario getLogin(int login) {
         SQLiteDatabase db = connector.getReadableDatabase();
         Cursor cursor = db.query("funcionario", null, "login_cod=?", new String[]{String.valueOf(login)}, null, null, null, null);
-        db.close();
         Funcionario funcionario = new Funcionario();
         if (cursor != null) {
             try {
@@ -141,6 +140,7 @@ public class FuncionarioDao {
                 cursor.close();
             }
         }
+        db.close();
         return funcionario;
     }
 
@@ -156,7 +156,7 @@ public class FuncionarioDao {
     public void populateSocket() {
         this.truncate();
         try {
-            JSONArray array = new JSONObject(new ClienteTCP().socketIO(ClienteTCP.geraJSON("get_Funcionario_All"))).getJSONObject("return").getJSONArray("funcionario");
+            JSONArray array = new JSONObject(new ConnectorSocket().execute(Util.geraJSON("get_Funcionario_All")).get()).getJSONObject("return").getJSONArray("funcionario");
             for (int i = 0; i < array.length(); i++) {
                 System.out.println(array.getJSONObject(i));
                 this.save(FuncionarioJSON.getFuncionarioJSON(array.getJSONObject(i)));
