@@ -41,11 +41,7 @@ public class OrdemServicoDao {
         values.put("descricao", ordemServico.getDescricao());
         values.put("cliente_codigo", ordemServico.getCliente());
         values.put("carro_cod", ordemServico.getCarro());
-        if (ordemServico.getCod() != 0) {
-            i = db.update("ordemservico", values, "cod = ?", new String[]{String.valueOf(ordemServico.getCod())});
-        } else {
             i = db.insert("ordemservico", null, values);
-        }
         db.close();
         return i;
     }
@@ -110,7 +106,8 @@ public class OrdemServicoDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("ordemservico", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("ordemservico", null, null);
         }
         db.close();

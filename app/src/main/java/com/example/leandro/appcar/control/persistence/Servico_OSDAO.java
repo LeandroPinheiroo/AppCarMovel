@@ -37,12 +37,7 @@ public class Servico_OSDao {
         values.put("servico_cod", servico_os.getServico());
         values.put("ordemservico_cod", servico_os.getOrdemservico());
         values.put("funcionario_codigo", servico_os.getFuncionario());
-
-        if (servico_os.getCod() != 0) {
-            i = db.update("servico_os", values, "cod = ?", new String[]{String.valueOf(servico_os.getCod())});
-        } else {
             i = db.insert("servico_os", null, values);
-        }
         db.close();
         return i;
     }
@@ -101,7 +96,8 @@ public class Servico_OSDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("servico_os", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("servico_os", null, null);
         }
         db.close();

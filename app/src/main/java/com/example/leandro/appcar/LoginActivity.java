@@ -1,7 +1,6 @@
 package com.example.leandro.appcar;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -23,9 +22,6 @@ import com.example.leandro.appcar.model.Remember_Me;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
-
-    private UserLoginTask mAuthTask = null;
-
     private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -35,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        remember_meDAO = new Remember_MeDao(this.getApplicationContext());
 
         if (remember_meDAO.getAll().size() > 0) {
             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
@@ -68,14 +66,49 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mLoginFormView = findViewById(R.id.login_form);
+
+
     }
 
 
-    private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
+    public void login(String email, String password) {
+        Login login = new Login();
+        login.setSenha(mPasswordView.getText().toString());
+        login.setUsuario(mEmailView.getText().toString());
+        try {
+            JSONObject json = new JSONObject();
+            json.put("login", LoginJSON.preencheJSON(login));
+            String a = new ConnectorSocket().execute(Util.geraJSON("login", json)).get();
+            System.out.println(a);
+            resposta = new JSONObject(a);
+
+            switch (resposta.getString("return")) {
+                case "success":
+                    Remember_MeDao remember_meDao = new Remember_MeDao(getApplicationContext());
+                    remember_meDao.truncate();
+                    remember_meDao.save(new Remember_Me(resposta.getInt("cod_login")));
+
+                    Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+                    intent.putExtra("cod_login", resposta.getInt("cod_login"));
+                    startActivity(intent);
+                    finish();
+                    break;
+                case "password_incorrect":
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                    break;
+                case "user_not_found":
+                    mEmailView.setError(getString(R.string.error_invalid_email));
+                    mEmailView.requestFocus();
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
 
+    }
+
+    private void attemptLogin() {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -105,89 +138,13 @@ public class LoginActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            login(email, password);
         }
     }
 
-    private static String login(JSONObject json) {
-        try {
-            return new ConnectorSocket().execute(Util.geraJSON("login", json)).get();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-        return null;
-    }
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
-    }
-
-
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            Login login = new Login();
-            login.setSenha(mPassword);
-            login.setUsuario(mEmail);
-            try {
-                JSONObject json = new JSONObject();
-                json.put("login", LoginJSON.preencheJSON(login));
-                String a = LoginActivity.login(json);
-                resposta = new JSONObject(a);
-                return true;
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            try {
-                switch (resposta.getString("return")) {
-                    case "success":
-                        if (success) {
-                            Remember_MeDao remember_meDao = new Remember_MeDao(getBaseContext());
-                            remember_meDao.truncate();
-                            remember_meDao.save(new Remember_Me(resposta.getInt("cod_login")));
-
-                            Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-                            intent.putExtra("cod_login", resposta.getInt("cod_login"));
-                            startActivity(intent);
-                            finish();
-                        }
-                        break;
-                    case "password_incorrect":
-                        mPasswordView.setError(getString(R.string.error_incorrect_password));
-                        mPasswordView.requestFocus();
-                        break;
-                    case "user_not_found":
-                        mEmailView.setError(getString(R.string.error_invalid_email));
-                        mEmailView.requestFocus();
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-        }
     }
 
 

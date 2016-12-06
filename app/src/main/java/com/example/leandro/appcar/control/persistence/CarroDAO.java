@@ -43,11 +43,7 @@ public class CarroDao {
         values.put("obs", carro.getObs());
         values.put("dono_codigo", carro.getDono());
 
-        if (carro.getCod() != 0) {
-            i = db.update("carro", values, "cod = ?", new String[]{String.valueOf(carro.getCod())});
-        } else {
             i = db.insert("carro", null, values);
-        }
 
         db.close();
         return i;
@@ -121,7 +117,8 @@ public class CarroDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("carro", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("carro", null, null);
         }
         db.close();

@@ -35,11 +35,7 @@ public class FuncionarioDao {
         ContentValues values = new ContentValues();
         values.put("codigo", funcionario.getCodigo());
         values.put("login_cod", funcionario.getLogin());
-        if (funcionario.getCodigo() != 0) {
-            i = db.update("funcionario", values, "codigo = ?", new String[]{String.valueOf(funcionario.getCodigo())});
-        } else {
             i = db.insert("funcionario", null, values);
-        }
         db.close();
         return i;
     }
@@ -116,12 +112,11 @@ public class FuncionarioDao {
 
     public Funcionario getLogin(int login) {
         SQLiteDatabase db = connector.getReadableDatabase();
-        Cursor cursor = db.query("funcionario", null, "login_cod=?", new String[]{String.valueOf(login)}, null, null, null, null);
+        Cursor cursor = db.query("funcionario", null, "login_cod="+login, null, null, null, null, null);
         Funcionario funcionario = new Funcionario();
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {
-                    do {
                         funcionario.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
                         funcionario.setLogin(cursor.getInt(cursor.getColumnIndex("login_cod")));
                         Pessoa pessoa = new PessoaDao(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
@@ -134,7 +129,6 @@ public class FuncionarioDao {
                         funcionario.setTelefoneF(pessoa.getTelefoneF());
                         funcionario.setRg(pessoa.getRg());
                         funcionario.setEndereco(pessoa.getEndereco());
-                    } while (cursor.moveToNext());
                 }
             } finally {
                 cursor.close();
@@ -147,7 +141,8 @@ public class FuncionarioDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("funcionario", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("funcionario", null, null);
         }
         db.close();

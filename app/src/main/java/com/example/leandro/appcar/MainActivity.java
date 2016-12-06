@@ -14,7 +14,9 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.example.leandro.appcar.control.persistence.CarroDao;
 import com.example.leandro.appcar.control.persistence.FuncionarioDao;
+import com.example.leandro.appcar.model.Carro;
 import com.example.leandro.appcar.model.Funcionario;
 import com.example.leandro.appcar.view.adapter.CustomExpandableListAdapter;
 import com.example.leandro.appcar.view.datasource.ExpandableListDataSource;
@@ -79,8 +81,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void onInit() {
         funcionarioDao = new FuncionarioDao(this.getApplicationContext());
-        funcionario = funcionarioDao.getLogin(getIntent().getIntExtra("cod_login", 0));
-        Toast.makeText(this.getApplicationContext(), "Bem Vindo " + ".", Toast.LENGTH_SHORT).show();
+        for (Funcionario fun : funcionarioDao.getAll()){
+           if(fun.getCodigo()==getIntent().getIntExtra("cod_login", 0)){
+               Toast.makeText(this.getApplicationContext(), "Bem Vindo " + fun.getNome(), Toast.LENGTH_SHORT).show();
+           }
+        }
+
+
+        for(Carro carro : new CarroDao(this.getApplicationContext()).getAll()){
+            System.out.println("PLACA "+carro.getPlaca());
+        }
+
     }
 
     public void onClickHeader() {

@@ -79,7 +79,8 @@ public class Remember_MeDao {
     }
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("remember_me", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("remember_me", null, null);
         }
         db.close();

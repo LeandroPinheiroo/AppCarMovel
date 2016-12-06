@@ -40,14 +40,8 @@ public class EnderecoDao {
         values.put("cidade", endereco.getCidade());
         values.put("complemento", endereco.getComplemento());
         values.put("cep", endereco.getCep());
-
-
-        if (endereco.getCod() != 0) {
-            i = db.update("endereco", values, "cod = ?", new String[]{String.valueOf(endereco.getCod())});
-        } else {
-            i = db.insert("endereco", null, values);
-            System.out.println("Inset Endf "+i);
-        }
+        i = db.insert("endereco", null, values);
+        System.out.println("Inset Endf " + i);
         db.close();
         return i;
     }
@@ -73,7 +67,7 @@ public class EnderecoDao {
                         endereco.setRua((cursor.getString(cursor.getColumnIndex("rua"))));
                         endereco.setBairro((cursor.getString(cursor.getColumnIndex("bairro"))));
                         endereco.setCidade((cursor.getString(cursor.getColumnIndex("cidade"))));
-                        endereco.setComplemento((cursor.getString(cursor.getColumnIndex("comeplento"))));
+                        endereco.setComplemento((cursor.getString(cursor.getColumnIndex("complemento"))));
                         endereco.setCep((cursor.getString(cursor.getColumnIndex("cep"))));
                         enderecos.add(endereco);
                     } while (cursor.moveToNext());
@@ -93,12 +87,12 @@ public class EnderecoDao {
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {
-                        endereco.setNumero((cursor.getString(cursor.getColumnIndex("numero"))));
-                        endereco.setRua((cursor.getString(cursor.getColumnIndex("rua"))));
-                        endereco.setBairro((cursor.getString(cursor.getColumnIndex("bairro"))));
-                        endereco.setCidade((cursor.getString(cursor.getColumnIndex("cidade"))));
-                        endereco.setComplemento((cursor.getString(cursor.getColumnIndex("comeplento"))));
-                        endereco.setCep((cursor.getString(cursor.getColumnIndex("cep"))));
+                    endereco.setNumero((cursor.getString(cursor.getColumnIndex("numero"))));
+                    endereco.setRua((cursor.getString(cursor.getColumnIndex("rua"))));
+                    endereco.setBairro((cursor.getString(cursor.getColumnIndex("bairro"))));
+                    endereco.setCidade((cursor.getString(cursor.getColumnIndex("cidade"))));
+                    endereco.setComplemento((cursor.getString(cursor.getColumnIndex("complemento"))));
+                    endereco.setCep((cursor.getString(cursor.getColumnIndex("cep"))));
                 }
             } finally {
                 cursor.close();
@@ -110,7 +104,8 @@ public class EnderecoDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("endereco", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("endereco", null, null);
         }
         db.close();

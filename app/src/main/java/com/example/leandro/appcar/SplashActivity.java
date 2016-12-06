@@ -37,9 +37,7 @@ public class SplashActivity extends AppCompatActivity {
 
         ctx = this.getApplicationContext();
 
-        cod_login = getIntent().getIntExtra("cod_login",0);
-
-        new InsertAsync().execute("");
+        cod_login = getIntent().getIntExtra("cod_login", 0);
     }
 
 
@@ -59,12 +57,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onResume();
         int tempoSplash = 5000;
 
+        this.populate();
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                intent.putExtra("cod_login",cod_login);
+                intent.putExtra("cod_login", cod_login);
                 startActivity(intent);
                 finish();
             }
@@ -72,7 +71,7 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public static void populate() {
+    public void populate() {
         new EnderecoDao(ctx).populateSocket();
         new PessoaDao(ctx).populateSocket();
         new ClienteDao(ctx).populateSocket();
@@ -82,28 +81,8 @@ public class SplashActivity extends AppCompatActivity {
         new OrdemServicoDao(ctx).populateSocket();
         new ServicoDao(ctx).populateSocket();
         new Servico_OSDao(ctx).populateSocket();
-        System.out.println("ACABOU");
-        System.out.println(new EnderecoDao(ctx).get(21).getCep());
     }
 
-    class InsertAsync extends AsyncTask<String, String, String> {
-        //método executado antes do método da segunda thread doInBackground
-        @Override
-        protected void onPreExecute() {
-        }
-
-        //método que será executado em outra thread
-        @Override
-        protected String doInBackground(String... args) {
-            SplashActivity.populate();
-            return "";
-        }
-
-        //método executado depois da thread do doInBackground
-        @Override
-        protected void onPostExecute(String retorno) {
-        }
-    }
 }
 
 

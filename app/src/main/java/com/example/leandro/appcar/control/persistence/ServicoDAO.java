@@ -37,12 +37,7 @@ public class ServicoDao {
         values.put("cod", servico.getCod());
         values.put("descricao", servico.getDescricao());
         values.put("valor", servico.getValor());
-
-        if (servico.getCod() != 0) {
-            i = db.update("servico", values, "cod = ?", new String[]{String.valueOf(servico.getCod())});
-        } else {
             i = db.insert("servico", null, values);
-        }
         db.close();
         return i;
     }
@@ -98,7 +93,8 @@ public class ServicoDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("servico", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("servico", null, null);
         }
         db.close();

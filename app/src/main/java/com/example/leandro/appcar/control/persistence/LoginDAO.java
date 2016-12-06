@@ -36,11 +36,7 @@ public class LoginDao {
         values.put("cod", login.getCod());
         values.put("senha", login.getSenha());
         values.put("usuario", login.getUsuario());
-        if (login.getCod() != 0) {
-            i = db.update("login", values, "cod = ?", new String[]{String.valueOf(login.getCod())});
-        } else {
             i = db.insert("login", null, values);
-        }
         db.close();
         return i;
     }
@@ -99,7 +95,8 @@ public class LoginDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("login", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("login", null, null);
         }
         db.close();

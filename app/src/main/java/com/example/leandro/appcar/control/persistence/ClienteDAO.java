@@ -35,13 +35,9 @@ public class ClienteDao {
         ContentValues values = new ContentValues();
         values.put("codigo", cliente.getCodigo());
 
-        if (cliente.getCodigo() != 0) {
-            i = db.update("cliente", values, "codigo = ?", new String[]{String.valueOf(cliente.getCodigo())});
-        } else {
             i = db.insert("cliente", null, values);
-        }
 
-        db.close();
+                db.close();
         return i;
     }
 
@@ -114,7 +110,8 @@ public class ClienteDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("cliente", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("cliente", null, null);
         }
         db.close();

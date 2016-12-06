@@ -42,12 +42,7 @@ public class PessoaDao {
         values.put("telefoneF", pessoa.getTelefoneF());
         values.put("rg", pessoa.getRg());
         values.put("endereco_cod", pessoa.getEndereco());
-
-        if (pessoa.getCodigo() != 0) {
-            i = db.update("pessoa", values, "codigo = ?", new String[]{String.valueOf(pessoa.getCodigo())});
-        } else {
             i = db.insert("pessoa", null, values);
-        }
         db.close();
         return i;
     }
@@ -115,7 +110,8 @@ public class PessoaDao {
 
     public void truncate() {
         SQLiteDatabase db = connector.getWritableDatabase();
-        if (this.getAll().size() > 0) {
+        Cursor cursor = db.query("pessoa", null, null, null, null, null, null);
+        if (cursor.getCount() > 0) {
             db.delete("pessoa", null, null);
         }
         db.close();
