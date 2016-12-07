@@ -41,7 +41,7 @@ public class OrdemServicoDao {
         values.put("descricao", ordemServico.getDescricao());
         values.put("cliente_codigo", ordemServico.getCliente());
         values.put("carro_cod", ordemServico.getCarro());
-            i = db.insert("ordemservico", null, values);
+        i = db.insert("ordemservico", null, values);
         db.close();
         return i;
     }

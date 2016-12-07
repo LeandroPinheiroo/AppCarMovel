@@ -47,9 +47,11 @@ public class ServicoAdapter extends BaseAdapter {
         TextView tvCod = (TextView) view.findViewById(R.id.textView);
         TextView tvDesc = (TextView) view.findViewById(R.id.textView);
         TextView tvValor = (TextView) view.findViewById(R.id.textView);
+
         tvCod.setText(itemLista.getCod());
         tvDesc.setText(itemLista.getDescricao());
         tvValor.setText(Double.toString(itemLista.getValor()));
+
         return view;
     }
 }

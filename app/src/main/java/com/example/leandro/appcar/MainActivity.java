@@ -12,11 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
-import com.example.leandro.appcar.control.persistence.CarroDao;
 import com.example.leandro.appcar.control.persistence.FuncionarioDao;
-import com.example.leandro.appcar.model.Carro;
 import com.example.leandro.appcar.model.Funcionario;
 import com.example.leandro.appcar.view.adapter.CustomExpandableListAdapter;
 import com.example.leandro.appcar.view.datasource.ExpandableListDataSource;
@@ -81,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onInit() {
         funcionarioDao = new FuncionarioDao(this.getApplicationContext());
-            }
+    }
 
     public void onClickHeader() {
         listHeaderView.setOnClickListener(new View.OnClickListener() {

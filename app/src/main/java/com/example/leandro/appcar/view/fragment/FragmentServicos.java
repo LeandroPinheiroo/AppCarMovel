@@ -39,17 +39,16 @@ public class FragmentServicos extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_servicos, container, false);
+        View view = inflater.inflate(R.layout.fragment_servicos, container, false);
+        adapter = new ServicoAdapter(this.getContext());
+        adapter.setLista((ArrayList<Servico>) new ServicoDao(this.getContext()).getAll());
+        listView = (ListView) view.findViewById(R.id.listOrcamentos);
+        listView.setAdapter(adapter);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        adapter = new ServicoAdapter(this.getContext());
-        adapter.setLista((ArrayList<Servico>) new ServicoDao(this.getContext()).getAll());
-
-        listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
     }
 }

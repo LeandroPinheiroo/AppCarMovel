@@ -50,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-        public void populate() {
+    public void populate() {
         new EnderecoDao(ctx).populateSocket();
         new PessoaDao(ctx).populateSocket();
         new ClienteDao(ctx).populateSocket();
@@ -63,7 +63,7 @@ public class SplashActivity extends AppCompatActivity {
         this.toMain();
     }
 
-    public void toMain(){
+    public void toMain() {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         intent.putExtra("cod_login", cod_login);
         startActivity(intent);

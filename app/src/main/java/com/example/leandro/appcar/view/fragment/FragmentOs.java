@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import com.example.leandro.appcar.R;
 import com.example.leandro.appcar.control.persistence.ServicoDao;
+import com.example.leandro.appcar.model.OrdemServico;
 import com.example.leandro.appcar.model.Servico;
 import com.example.leandro.appcar.view.adapter.ServicoAdapter;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 
 public class FragmentOs extends Fragment {
     private ListView listView;
-    private ArrayList<Servico> lista = new ArrayList<>();
+    private OrdemServico os;
     private ServicoAdapter adapter;
 
     public FragmentOs() {
@@ -39,16 +40,18 @@ public class FragmentOs extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ordem_servico, container, false);
+        View view = inflater.inflate(R.layout.fragment_ordem_servico, container, false);
+        listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
+        adapter = new ServicoAdapter(this.getContext());
+        adapter.setLista((ArrayList<Servico>) new ServicoDao(this.getContext()).getAll());
+        listView.setAdapter(adapter);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
-        adapter = new ServicoAdapter(this.getContext());
-        adapter.setLista((ArrayList<Servico>) new ServicoDao(this.getContext()).getAll());
+
     }
 
 }

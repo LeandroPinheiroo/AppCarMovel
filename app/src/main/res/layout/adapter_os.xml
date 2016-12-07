@@ -68,7 +68,7 @@
                         android:text="Marca"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textMarca"
+                        android:id="@+id/textCarMarca"
                         android:fontFamily="serif"
                         android:textColor="@android:color/black"
                         android:layout_weight="0.20" />

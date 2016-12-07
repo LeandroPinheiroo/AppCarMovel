@@ -42,21 +42,21 @@ public class FragmentOsFechada extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_os_fechada, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_os_fechada, container, false);
+        listView = (ListView) view.findViewById(R.id.listOrcamentos);
         for (OrdemServico os : new OrdemServicoDao(this.getContext()).getAll()) {
             if (os.getSituacao() == 3) {
                 lista.add(os);
             }
         }
-        listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
         adapter = new OrdemServicoAdapter(this.getContext());
         adapter.setLista(lista);
+        listView.setAdapter(adapter);
+        return view;
+    }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 }

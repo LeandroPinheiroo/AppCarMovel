@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.leandro.appcar.R;
+import com.example.leandro.appcar.control.persistence.CarroDao;
+import com.example.leandro.appcar.model.Carro;
 import com.example.leandro.appcar.model.OrdemServico;
 
 import java.util.ArrayList;
@@ -46,13 +48,23 @@ public class OrdemServicoAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        com.example.leandro.appcar.model.OrdemServico itemLista = lista.get(position);
+        OrdemServico itemLista = lista.get(position);
+        Carro carro = new CarroDao(this.context).get(itemLista.getCarro());
+
         View view = LayoutInflater.from(context).inflate(R.layout.adapter_os, parent, false);
+
         TextView tvCod = (TextView) view.findViewById(R.id.textValorCod);
+        TextView tvData = (TextView) view.findViewById(R.id.textValorData);
         TextView tvMarca = (TextView) view.findViewById(R.id.textCarMarca);
         TextView tvModelo = (TextView) view.findViewById(R.id.textCarModelo);
-        TextView tvData = (TextView) view.findViewById(R.id.textValorData);
-        TextView tvPlca = (TextView) view.findViewById(R.id.textValorPlaca);
+        TextView tvPlaca = (TextView) view.findViewById(R.id.textValorPlaca);
+
+        tvCod.setText(String.valueOf(itemLista.getCod()));
+        tvData.setText(itemLista.getData().toString());
+        tvMarca.setText(carro.getMarca());
+        tvModelo.setText(carro.getModelo());
+        tvPlaca.setText(carro.getPlaca());
+
         return view;
     }
 
