@@ -81,18 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onInit() {
         funcionarioDao = new FuncionarioDao(this.getApplicationContext());
-        for (Funcionario fun : funcionarioDao.getAll()){
-           if(fun.getCodigo()==getIntent().getIntExtra("cod_login", 0)){
-               Toast.makeText(this.getApplicationContext(), "Bem Vindo " + fun.getNome(), Toast.LENGTH_SHORT).show();
-           }
-        }
-
-
-        for(Carro carro : new CarroDao(this.getApplicationContext()).getAll()){
-            System.out.println("PLACA "+carro.getPlaca());
-        }
-
-    }
+            }
 
     public void onClickHeader() {
         listHeaderView.setOnClickListener(new View.OnClickListener() {

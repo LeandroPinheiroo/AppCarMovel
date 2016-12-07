@@ -21,7 +21,7 @@ public class FragmentOrcamento extends Fragment {
     private OrdemServicoAdapter adapter;
 
     public FragmentOrcamento() {
-        // Required empty public constructor
+
     }
 
     public static FragmentOrcamento newInstance() {
@@ -34,25 +34,27 @@ public class FragmentOrcamento extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_orcamento, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         for (OrdemServico os : new OrdemServicoDao(this.getContext()).getAll()) {
             if (os.getSituacao() == 1) {
                 lista.add(os);
             }
         }
-        listView = (ListView) this.getView().findViewById(R.id.listOrcamentos);
+        listView = (ListView) this.getActivity().findViewById(R.id.listOrcamentos);
         adapter = new OrdemServicoAdapter(this.getContext());
         adapter.setLista(lista);
+        listView.setAdapter(adapter);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+       return inflater.inflate(R.layout.fragment_orcamento, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 }

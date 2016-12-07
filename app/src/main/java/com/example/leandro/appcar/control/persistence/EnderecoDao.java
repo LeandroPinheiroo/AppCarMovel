@@ -41,7 +41,6 @@ public class EnderecoDao {
         values.put("complemento", endereco.getComplemento());
         values.put("cep", endereco.getCep());
         i = db.insert("endereco", null, values);
-        System.out.println("Inset Endf " + i);
         db.close();
         return i;
     }

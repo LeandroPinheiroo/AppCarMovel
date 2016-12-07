@@ -82,13 +82,12 @@ public class FuncionarioDao {
 
     public Funcionario get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
-        Cursor cursor = db.query("funcionario", null, "codigo=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        Cursor cursor = db.query("funcionario", null,"codigo=?",new String[]{String.valueOf(id)}, null, null, null, null);
         Funcionario funcionario = new Funcionario();
         if (cursor != null) {
             try {
-                if (cursor.moveToFirst()) {
-                    do {
-                        funcionario.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
+                if (cursor.moveToFirst()){
+                funcionario.setCodigo(cursor.getInt(cursor.getColumnIndex("codigo")));
                         funcionario.setLogin(cursor.getInt(cursor.getColumnIndex("login_cod")));
                         Pessoa pessoa = new PessoaDao(this.context).get(cursor.getInt(cursor.getColumnIndex("codigo")));
                         funcionario.setNome(pessoa.getNome());
@@ -100,7 +99,6 @@ public class FuncionarioDao {
                         funcionario.setTelefoneF(pessoa.getTelefoneF());
                         funcionario.setRg(pessoa.getRg());
                         funcionario.setEndereco(pessoa.getEndereco());
-                    } while (cursor.moveToNext());
                 }
             } finally {
                 cursor.close();
