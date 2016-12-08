@@ -31,6 +31,7 @@
     <string-array name="menu">
         <item>Ordem de Serviço</item>
         <item>Serviços</item>
+        <item>Configurações</item>
     </string-array>
 
     <!--Itens de O.S-->
@@ -46,6 +47,12 @@
         <item>Serviços Realizados</item>
     </string-array>
 
+
+    <!--Itens de Configuracoes-->
+    <string-array name="configuracoes">
+        <item>Sair</item>
+    </string-array>
+
     <!--Fragment de Lista de Serviço-->
     <string name="tituloServiço">Serviços</string>
     <string name="tituloServiçoReal">Serviços Realizados</string>
@@ -58,8 +65,5 @@
 
     <!--Fragment de Main-->
     <string name="tituloMain">Bem vindo ao AppCar</string>
-
-
-
 
 </resources>

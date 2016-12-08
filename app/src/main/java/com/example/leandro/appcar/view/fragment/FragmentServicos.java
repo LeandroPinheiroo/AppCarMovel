@@ -20,14 +20,13 @@ public class FragmentServicos extends Fragment {
     private ServicoAdapter adapter;
 
     public FragmentServicos() {
-        lista = (ArrayList<Servico>) new ServicoDao(this.getContext()).getAll();
+
     }
 
     public static FragmentServicos newInstance() {
         FragmentServicos fragmentAction = new FragmentServicos();
         Bundle args = new Bundle();
         fragmentAction.setArguments(args);
-
         return fragmentAction;
     }
 
@@ -42,7 +41,7 @@ public class FragmentServicos extends Fragment {
         View view = inflater.inflate(R.layout.fragment_servicos, container, false);
         adapter = new ServicoAdapter(this.getContext());
         adapter.setLista((ArrayList<Servico>) new ServicoDao(this.getContext()).getAll());
-        listView = (ListView) view.findViewById(R.id.listOrcamentos);
+        listView = (ListView) view.findViewById(R.id.listServicos);
         listView.setAdapter(adapter);
         return view;
     }

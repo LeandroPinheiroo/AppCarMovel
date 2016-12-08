@@ -14,5 +14,5 @@ public interface NavigationManager {
 
     void showFragmentMain();
 
-    void showFragmentOs();
+    void showFragmentOs(int id);
 }

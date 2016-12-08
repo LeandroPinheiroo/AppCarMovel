@@ -64,6 +64,7 @@ public class OrdemServicoDao {
                     do {
                         OrdemServico ordemServico = new OrdemServico();
                         ordemServico.setData(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("data"))));
+                        ordemServico.setTipo(cursor.getString(cursor.getColumnIndex("tipo")));
                         ordemServico.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
                         ordemServico.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
                         ordemServico.setSituacao(cursor.getInt(cursor.getColumnIndex("situacao")));
@@ -83,13 +84,14 @@ public class OrdemServicoDao {
 
     public OrdemServico get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
-        Cursor cursor = db.query("ordemservico", null, "codigo=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        Cursor cursor = db.query("ordemservico", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
         OrdemServico ordemServico = new OrdemServico();
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {
                     ordemServico.setData(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("data"))));
                     ordemServico.setCod(cursor.getInt(cursor.getColumnIndex("cod")));
+                    ordemServico.setTipo(cursor.getString(cursor.getColumnIndex("tipo")));
                     ordemServico.setDescricao(cursor.getString(cursor.getColumnIndex("descricao")));
                     ordemServico.setSituacao(cursor.getInt(cursor.getColumnIndex("situacao")));
                     ordemServico.setData(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("data"))));

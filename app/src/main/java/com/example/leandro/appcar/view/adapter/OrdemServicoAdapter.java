@@ -7,20 +7,25 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.leandro.appcar.MainActivity;
 import com.example.leandro.appcar.R;
 import com.example.leandro.appcar.control.persistence.CarroDao;
 import com.example.leandro.appcar.model.Carro;
 import com.example.leandro.appcar.model.OrdemServico;
+import com.example.leandro.appcar.view.fragment.navigation.FragmentNavigationManager;
+import com.example.leandro.appcar.view.fragment.navigation.NavigationManager;
 
 import java.util.ArrayList;
 
 public class OrdemServicoAdapter extends BaseAdapter {
     private ArrayList<OrdemServico> lista = new ArrayList<>();
     private Context context;
+    private NavigationManager mNavigationManager;
 
     public OrdemServicoAdapter(Context context) {
         super();
         this.context = context;
+        mNavigationManager = FragmentNavigationManager.obtain((MainActivity) context);
     }
 
     public ArrayList<OrdemServico> getLista() {
@@ -48,12 +53,12 @@ public class OrdemServicoAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        OrdemServico itemLista = lista.get(position);
+       final OrdemServico itemLista = lista.get(position);
         Carro carro = new CarroDao(this.context).get(itemLista.getCarro());
 
         View view = LayoutInflater.from(context).inflate(R.layout.adapter_os, parent, false);
 
-        TextView tvCod = (TextView) view.findViewById(R.id.textValorCod);
+        final TextView tvCod = (TextView) view.findViewById(R.id.textValorCod);
         TextView tvData = (TextView) view.findViewById(R.id.textValorData);
         TextView tvMarca = (TextView) view.findViewById(R.id.textCarMarca);
         TextView tvModelo = (TextView) view.findViewById(R.id.textCarModelo);
@@ -65,7 +70,20 @@ public class OrdemServicoAdapter extends BaseAdapter {
         tvModelo.setText(carro.getModelo());
         tvPlaca.setText(carro.getPlaca());
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNavigationManager.showFragmentOs(itemLista.getCod());
+            }
+        });
+
         return view;
+
     }
+
+
+
+
+
 
 }

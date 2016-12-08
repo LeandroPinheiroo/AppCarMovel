@@ -32,9 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
         remember_meDAO = new Remember_MeDao(this.getApplicationContext());
 
         if (remember_meDAO.getAll().size() > 0) {
@@ -43,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
         mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);

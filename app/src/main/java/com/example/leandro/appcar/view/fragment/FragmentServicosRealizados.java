@@ -40,11 +40,14 @@ public class FragmentServicosRealizados extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_servicos, container, false);
+        View view = inflater.inflate(R.layout.fragment_servicos_realizados, container, false);
+
         adapter = new ServicoAdapter(this.getContext());
         adapter.setLista((ArrayList<Servico>) new ServicoDao(this.getContext()).getAll());
-        listView = (ListView) view.findViewById(R.id.listOrcamentos);
+
+        listView = (ListView) view.findViewById(R.id.listServicosRealizados);
         listView.setAdapter(adapter);
+
         return view;
     }
 

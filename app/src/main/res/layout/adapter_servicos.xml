@@ -20,7 +20,7 @@
 
             <TextView
                 android:text="0"
-                android:layout_width="32dp"
+                android:layout_width="62dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textValorCod"
                 android:textSize="36sp"
@@ -43,11 +43,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/textDescricacao"
-                        android:layout_weight="0.04"
                         android:fontFamily="serif"
                         android:textSize="14sp"
                         android:textAllCaps="false"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:layout_marginRight="5dp" />
 
                     <TextView
                         android:text="0"
@@ -70,8 +70,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/textValor"
                     android:fontFamily="serif"
-                    android:layout_weight="0.04"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:layout_marginRight="5dp" />
 
                 <TextView
                     android:text="0"

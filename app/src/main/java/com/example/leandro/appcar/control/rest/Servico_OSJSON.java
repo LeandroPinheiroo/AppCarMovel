@@ -17,8 +17,8 @@ public class Servico_OSJSON {
             //pega do json os registros da tag servico_os
             servico_os.setCod(object.getInt("cod"));
             servico_os.setFuncionario(object.getInt("funcionario_codigo"));
-            servico_os.setOrdemservico(object.getInt("ordemservico_cod"));
-            servico_os.setServico(object.getInt("servico_cod"));
+            servico_os.setOrdemservico(object.getInt("ordemservico_codigo"));
+            servico_os.setServico(object.getInt("servico_codigo"));
         } catch (Exception x) {
         }
         return servico_os;

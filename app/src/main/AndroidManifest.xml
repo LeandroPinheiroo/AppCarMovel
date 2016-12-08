@@ -34,7 +34,7 @@
         </intent-filter></activity>
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/NoBar"
             >
 
         </activity>

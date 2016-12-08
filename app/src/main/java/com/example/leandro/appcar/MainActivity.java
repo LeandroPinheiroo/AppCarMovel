@@ -1,5 +1,6 @@
 package com.example.leandro.appcar;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -12,8 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.example.leandro.appcar.control.persistence.FuncionarioDao;
+import com.example.leandro.appcar.control.persistence.Remember_MeDao;
 import com.example.leandro.appcar.model.Funcionario;
 import com.example.leandro.appcar.view.adapter.CustomExpandableListAdapter;
 import com.example.leandro.appcar.view.datasource.ExpandableListDataSource;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Map<String, List<String>> mExpandableListData;
     private FuncionarioDao funcionarioDao;
     private Funcionario funcionario;
+    private TextView nome_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         LayoutInflater inflater = getLayoutInflater();
         listHeaderView = inflater.inflate(R.layout.nav_header, null, false);
+        nome_user = (TextView) listHeaderView.findViewById(R.id.user);
         this.onClickHeader();
 
         mExpandableListView.addHeaderView(listHeaderView);
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onInit() {
         funcionarioDao = new FuncionarioDao(this.getApplicationContext());
+        nome_user.setText(funcionarioDao.get(this.getIntent().getIntExtra("cod_login", 0)).getNome());
     }
 
     public void onClickHeader() {
@@ -85,9 +91,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mNavigationManager.showFragmentMain();
-                getSupportActionBar().setTitle("AppCar");
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-
+                getSupportActionBar().setTitle("AppCar");
             }
         });
     }
@@ -143,6 +148,16 @@ public class MainActivity extends AppCompatActivity {
                             mNavigationManager.showFragmentServicosRealizados();
                             break;
                     }
+                } else if (items[2].equals(mExpandableListTitle.get(groupPosition))) {
+                    switch (selectedItem) {
+                        case "Sair":
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            Remember_MeDao remember_meDao = new Remember_MeDao(getApplicationContext());
+                            remember_meDao.truncate();
+                            startActivity(intent);
+                            finish();
+                            break;
+                    }
                 } else {
                     throw new IllegalArgumentException("Not supported fragment type");
                 }
@@ -163,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
 
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu();
             }
         };

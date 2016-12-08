@@ -42,8 +42,8 @@ public class FragmentNavigationManager implements NavigationManager {
     }
 
     @Override
-    public void showFragmentOs() {
-        showFragment(FragmentOs.newInstance(), false);
+    public void showFragmentOs(int i) {
+        showFragment(FragmentOs.newInstance(i), false);
     }
 
     @Override

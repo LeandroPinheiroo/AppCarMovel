@@ -43,9 +43,9 @@ public class FragmentOsFechada extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_os_fechada, container, false);
-        listView = (ListView) view.findViewById(R.id.listOrcamentos);
+        listView = (ListView) view.findViewById(R.id.listOsFechada);
         for (OrdemServico os : new OrdemServicoDao(this.getContext()).getAll()) {
-            if (os.getSituacao() == 3) {
+            if (os.getSituacao() == 3 || os.getSituacao() == 0 ) {
                 lista.add(os);
             }
         }

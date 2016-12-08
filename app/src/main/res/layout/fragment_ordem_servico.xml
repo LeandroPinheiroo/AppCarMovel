@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#E0E0E0"
         android:orientation="vertical"
-        android:background="#E0E0E0">
+        android:weightSum="1">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
+
             <TextView
-                android:text="Ordem de Serviço"
+                android:id="@+id/textOs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textOs"
-                android:textAlignment="center"
-                tools:textColor="Black" />
+                android:text="Ordem de Serviço"
+                android:textAlignment="center" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -31,17 +34,17 @@
                     android:id="@+id/textOsCodigo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Código:"
-                    android:text="lll"
-                    android:textColor="@color/text_color"
                     android:enabled="false"
+                    android:hint="Código:"
                     android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textSize="14sp"
-                                       />
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -50,50 +53,70 @@
                     android:id="@+id/textOsTipo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tipo:"
-                    android:textColor="@color/text_color"
                     android:enabled="false"
+                    android:hint="Tipo:"
                     android:inputType="text"
-                    android:text="lll"
                     android:maxLines="1"
-                    android:textSize="14sp"
-                     />
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
 
-            </android.support.design.widget.TextInputLayout> <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/textOsDescricao"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Decrição:"
-                android:text="lll"
-                android:textColor="@color/text_color"
-                android:enabled="false"
-                android:inputType="none"
-                android:maxLines="2"
-                android:singleLine="true"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/textOsDescricao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="Decrição:"
+                    android:inputType="none"
+                    android:maxLines="2"
+                    android:singleLine="true"
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/textData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="Data:"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
+
             <TextView
-                android:text="Cliente"
+                android:id="@+id/textCliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textCliente"
-                android:textAlignment="center"
-                tools:textColor="Black" />
+                android:text="Cliente"
+                android:textAlignment="center" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -102,17 +125,17 @@
                     android:id="@+id/textCliCodigo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Código:"
-                    android:text="lll"
-                    android:textColor="@color/text_color"
                     android:enabled="false"
+                    android:hint="Código:"
                     android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textSize="14sp"
-                    />
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -121,68 +144,71 @@
                     android:id="@+id/textCliNome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nome:"
-                    android:textColor="@color/text_color"
                     android:enabled="false"
+                    android:hint="Nome:"
                     android:inputType="text"
-                    android:text="lll"
                     android:maxLines="1"
-                    android:textSize="14sp"
-                    />
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
 
-            </android.support.design.widget.TextInputLayout> <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/texCliCpf"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="CPF:"
-                android:text="lll"
-                android:textColor="@color/text_color"
-                android:enabled="false"
-                android:inputType="none"
-                android:maxLines="2"
-                android:singleLine="true"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
-          <android.support.design.widget.TextInputLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/texCliCpf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="CPF:"
+                    android:inputType="none"
+                    android:maxLines="2"
+                    android:singleLine="true"
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/textCliTelefone"
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Telefone:"
-                android:text="lll"
-                android:textColor="@color/text_color"
-                android:enabled="false"
-                android:inputType="none"
-                android:maxLines="2"
-                android:singleLine="true"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/textCliTelefone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="Telefone:"
+                    android:inputType="none"
+                    android:maxLines="2"
+                    android:singleLine="true"
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
+
             <TextView
-                android:text="Carro"
+                android:id="@+id/texCarro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/texCarro"
-                android:textAlignment="center"
-                tools:textColor="Black" />
+                android:text="Carro"
+                android:textAlignment="center" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -191,17 +217,17 @@
                     android:id="@+id/textCarCodigo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Código:"
-                    android:text="lll"
-                    android:textColor="@color/text_color"
                     android:enabled="false"
+                    android:hint="Código:"
                     android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textSize="14sp"
-                    />
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -210,33 +236,36 @@
                     android:id="@+id/textCarMarca"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Marca:"
-                    android:textColor="@color/text_color"
                     android:enabled="false"
+                    android:hint="Marca:"
                     android:inputType="text"
-                    android:text="lll"
                     android:maxLines="1"
-                    android:textSize="14sp"
-                    />
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
 
-            </android.support.design.widget.TextInputLayout> <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/textModelo"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textCarModelo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Modelo:"
-                android:text="lll"
-                android:textColor="@color/text_color"
-                android:enabled="false"
-                android:inputType="none"
-                android:maxLines="2"
-                android:singleLine="true"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/textModelo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="Modelo:"
+                    android:inputType="none"
+                    android:maxLines="2"
+                    android:singleLine="true"
+                    android:text="lll"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -245,13 +274,13 @@
                     android:id="@+id/textPlaca"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Placa:"
-                    android:text="lll"
-                    android:textColor="@color/text_color"
                     android:enabled="false"
+                    android:hint="Placa:"
                     android:inputType="none"
                     android:maxLines="2"
                     android:singleLine="true"
+                    android:text="lll"
+                    android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
             </android.support.design.widget.TextInputLayout>
@@ -259,57 +288,57 @@
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:background="@color/white">
+            android:layout_weight="0.92"
+            android:background="@color/white"
+            android:orientation="vertical">
+
             <TextView
-                android:text="Serviços"
+                android:id="@+id/textServico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textServico"
-                android:textAlignment="center"
-                tools:textColor="Black" />
+                android:text="Serviços"
+                android:textAlignment="center" />
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listOrcamentos"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" />
+                <ListView
+                    android:id="@+id/listServicosOS"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="right"
             android:layout_marginBottom="20dp"
-            android:layout_gravity="right">
+            android:orientation="horizontal">
 
             <TextView
-                android:text="Valor"
+                android:id="@+id/textValor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textValor"
-                android:textAlignment="viewEnd"
                 android:layout_marginRight="5dp"
+                android:text="Valor"
+                android:textAlignment="viewEnd"
                 android:textColorLink="?attr/actionMenuTextColor" />
 
             <TextView
-                android:text="R$00,00"
+                android:id="@+id/textValorEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textValorEdit"
-                android:textAlignment="viewEnd"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:text="R$00,00"
+                android:textAlignment="viewEnd" />
 
         </LinearLayout>
 
 
     </LinearLayout>
-
 
 
 </ScrollView>

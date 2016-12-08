@@ -75,7 +75,7 @@ public class ServicoDao {
     public Servico get(int id) {
         SQLiteDatabase db = connector.getReadableDatabase();
         Servico servico = new Servico();
-        Cursor cursor = db.query("servico", null, "cod=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        Cursor cursor = db.query("servico", null,"cod=?",new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {

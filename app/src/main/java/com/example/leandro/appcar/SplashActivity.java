@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.leandro.appcar.control.persistence.CarroDao;
@@ -17,7 +18,7 @@ import com.example.leandro.appcar.control.persistence.PessoaDao;
 import com.example.leandro.appcar.control.persistence.ServicoDao;
 import com.example.leandro.appcar.control.persistence.Servico_OSDao;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements Runnable {
 
     private ImageView splash;
     private AnimationDrawable splashAnimation;
@@ -29,24 +30,19 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_splash);
 
-        splash = (ImageView) findViewById(R.id.ivAnimacao);
-        splash.setBackgroundResource(R.drawable.splash_animation);
-
         ctx = this.getApplicationContext();
         cod_login = getIntent().getIntExtra("cod_login", 0);
-    }
 
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        splashAnimation = (AnimationDrawable) splash.getBackground();
-        if (hasFocus) {
-            splashAnimation.start();
-            this.populate();
-        } else {
-            splashAnimation.stop();
-        }
+        new Thread() {
+            public void run() {
+                try {
+                    sleep(3000);
+                    populate();
+                } catch (InterruptedException e) {
+                    Log.d("ERRO SPLASH",e.toString());
+                }
+            }
+        }.start();
 
     }
 
@@ -60,10 +56,10 @@ public class SplashActivity extends AppCompatActivity {
         new OrdemServicoDao(ctx).populateSocket();
         new ServicoDao(ctx).populateSocket();
         new Servico_OSDao(ctx).populateSocket();
-        this.toMain();
+        this.run();
     }
 
-    public void toMain() {
+    public void run() {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         intent.putExtra("cod_login", cod_login);
         startActivity(intent);
@@ -71,5 +67,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 }
+
 
 
