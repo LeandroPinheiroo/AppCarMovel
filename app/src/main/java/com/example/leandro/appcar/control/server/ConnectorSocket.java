@@ -17,7 +17,7 @@ import java.net.Socket;
 public class ConnectorSocket extends AsyncTask<String, Void, String> {
 
     private Socket s; //socket res
-    private static String ipServ = "192.168.0.107"; //ip do servidor
+    private static String ipServ = "172.16.2.148"; //ip do servidor
     private static int portaServ = 3322; //porta do servidor
 
 

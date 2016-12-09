@@ -52,7 +52,14 @@ public class MainActivity extends AppCompatActivity {
             mNavigationManager.showFragmentMain();
         }
         this.onInit();
+
     }
+
+    @Override
+    public void onBackPressed() {
+        mNavigationManager.showFragmentMain();
+    }
+
 
     public void initUI() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
